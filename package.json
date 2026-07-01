@@ -1,6 +1,6 @@
 {
   "name": "ald-amil-casino",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "private": true,
   "description": "A multiplayer blackjack table for Foundry VTT v14.",
   "scripts": {

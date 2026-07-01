@@ -687,11 +687,9 @@
     }
 
     renderTable(hideHole, currentId, mySeat, myGold, countdown) {
-      const settled = state.phase === "settled";
       return `<section class="aac-table-stage">
         <div class="aac-felt-table">
           ${this.renderDealer(hideHole)}
-          ${settled ? this.renderPayoutRibbon() : ""}
           <div class="aac-seat-ring ${state.seats.length ? "" : "is-empty"}">
             ${state.seats.length ? state.seats.map((p, index) => this.renderSeat(p, currentId, index)).join("") : `<div class="aac-table-empty">Use <strong>!casino</strong> to open this table, then join a seat.</div>`}
           </div>
@@ -715,18 +713,6 @@
       return `<section class="aac-dealer">
         <div class="aac-hand ${dealerBlackjack ? "is-blackjack" : ""}">${renderHand(state.dealer.hand, hideHole)}</div>
         <span class="aac-dealer-total">${esc(renderValue(state.dealer.hand, hideHole))}</span>
-      </section>`;
-    }
-
-    renderPayoutRibbon() {
-      const settled = playingSeats(state);
-      if (!settled.length) return "";
-      return `<section class="aac-payout-ribbon">
-        ${settled.map(p => {
-          const delta = Number(p.lastDelta || 0);
-          const tone = delta > 0 ? "win" : delta < 0 ? "loss" : "push";
-          return `<span class="aac-payout is-${tone}"><strong>${esc(p.name)}</strong> ${esc(p.result || "Push")} <b>${delta >= 0 ? "+" : ""}${delta}g</b></span>`;
-        }).join("")}
       </section>`;
     }
 
