@@ -21,6 +21,7 @@ New-Item -ItemType Directory -Path $stage | Out-Null
 $items = @(
   "module.json",
   "README.md",
+  "assets/ald-amil-table.png",
   "scripts/ald-amil-casino.js",
   "styles/ald-amil-casino.css"
 )

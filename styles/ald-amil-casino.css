@@ -18,11 +18,11 @@
 
 .aac-floating-window {
   position: fixed;
-  top: 3vh;
+  top: 2vh;
   left: 50%;
   z-index: 100;
-  width: min(1180px, calc(100vw - 24px));
-  height: min(760px, calc(100vh - 24px));
+  width: min(1220px, calc(100vw - 24px));
+  height: min(820px, calc(100vh - 24px));
   overflow: hidden;
   border: 1px solid rgba(255, 214, 93, .38);
   border-radius: 8px;
@@ -35,8 +35,8 @@
 .ald-amil-casino-window {
   min-width: 1060px;
   min-height: 700px;
-  max-width: 1180px;
-  max-height: 760px;
+  max-width: 1220px;
+  max-height: 820px;
 }
 
 .aac-window-content,
@@ -179,111 +179,26 @@
   min-height: 0;
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 50% 45%, rgba(35, 255, 145, .24), transparent 35%),
-    radial-gradient(ellipse at 50% 42%, #0aa055 0%, #08733f 42%, #03572f 68%, #01321f 100%);
-  box-shadow: inset 0 0 90px rgba(0, 0, 0, .58);
+    linear-gradient(180deg, rgba(0, 0, 0, .03), rgba(0, 0, 0, .06)),
+    url("../assets/ald-amil-table.png") center center / 100% 100% no-repeat;
+  box-shadow: inset 0 0 42px rgba(0, 0, 0, .42);
 }
 
 .aac-felt-table::before {
-  content: "";
-  position: absolute;
-  left: -7%;
-  right: -7%;
-  bottom: 42px;
-  height: 185px;
-  border-top: 14px solid #5c2d13;
-  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-  background:
-    repeating-radial-gradient(ellipse at 50% 0%, transparent 0 86px, rgba(255, 211, 105, .3) 88px 91px, transparent 94px 150px),
-    linear-gradient(180deg, #8d4b1f, #3b1e11 34%, #0c0b0a 36%, #131313 100%);
-  box-shadow: inset 0 8px 8px rgba(255, 229, 150, .18), 0 -9px 18px rgba(0, 0, 0, .42);
-  pointer-events: none;
+  content: none;
 }
 
 .aac-felt-table::after {
-  content: "";
-  position: absolute;
-  left: 4%;
-  right: 4%;
-  bottom: 151px;
-  height: 245px;
-  border: 2px solid rgba(255, 236, 162, .38);
-  border-top: 0;
-  border-radius: 0 0 50% 50% / 0 0 100% 100%;
-  opacity: .72;
-  pointer-events: none;
+  content: none;
 }
 
 .aac-table-copy {
-  position: absolute;
-  inset: 24px 70px auto;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: 210px 1fr 240px;
-  align-items: start;
-  gap: 20px;
-  pointer-events: none;
-}
-
-.aac-table-brand {
-  display: grid;
-  justify-items: center;
-  gap: 4px;
-  padding-top: 20px;
-  color: rgba(255, 247, 220, .82);
-  text-align: center;
-  text-transform: uppercase;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, .42);
-}
-
-.aac-table-brand span {
-  font-family: Georgia, "Times New Roman", serif;
-  color: #fff6d4;
-  font-size: 38px;
-  line-height: .92;
-}
-
-.aac-table-brand strong {
-  color: rgba(255, 252, 228, .78);
-  font-size: 18px;
-  font-weight: 950;
-}
-
-.aac-table-brand small {
-  max-width: 520px;
-  color: #ffe474;
-  font-size: 15px;
-  font-weight: 950;
-}
-
-.aac-side-rules {
-  display: grid;
-  gap: 2px;
-  color: rgba(255, 247, 220, .72);
-  font-size: 13px;
-  font-weight: 850;
-  line-height: 1.08;
-  text-transform: uppercase;
-}
-
-.aac-side-rules strong {
-  color: #fff7dc;
-  font-size: 14px;
-}
-
-.aac-rules-left {
-  justify-items: end;
-  text-align: right;
-  transform: rotate(-8deg);
-}
-
-.aac-rules-right {
-  transform: rotate(5deg);
+  display: none;
 }
 
 .aac-dealer {
   position: absolute;
-  top: 38px;
+  top: 78px;
   left: 50%;
   z-index: 5;
   min-width: 170px;
@@ -451,15 +366,15 @@
   background: linear-gradient(#fb5c68, #8b101b);
 }
 
-.aac-seat-0 { left: 50%; top: 57%; }
-.aac-seat-1 { left: 31%; top: 57%; }
-.aac-seat-2 { left: 69%; top: 57%; }
-.aac-seat-3 { left: 17%; top: 40%; }
-.aac-seat-4 { left: 83%; top: 40%; }
-.aac-seat-5 { left: 18%; top: 71%; }
-.aac-seat-6 { left: 34%; top: 76%; }
-.aac-seat-7 { left: 66%; top: 76%; }
-.aac-seat-8 { left: 82%; top: 71%; }
+.aac-seat-0 { left: 50%; top: 71%; }
+.aac-seat-1 { left: 36%; top: 69%; }
+.aac-seat-2 { left: 64%; top: 69%; }
+.aac-seat-3 { left: 22%; top: 58%; }
+.aac-seat-4 { left: 78%; top: 58%; }
+.aac-seat-5 { left: 12%; top: 48%; }
+.aac-seat-6 { left: 88%; top: 48%; }
+.aac-seat-7 { left: 27%; top: 76%; }
+.aac-seat-8 { left: 73%; top: 76%; }
 
 .aac-seat .aac-hand {
   width: 150px;
@@ -641,7 +556,7 @@
 .aac-countdown {
   position: absolute;
   left: 50%;
-  bottom: 202px;
+  bottom: 255px;
   z-index: 8;
   display: grid;
   place-items: center;
@@ -679,11 +594,11 @@
   grid-template-columns: minmax(240px, 1fr) auto minmax(240px, 1fr);
   align-items: end;
   gap: 18px;
-  min-height: 142px;
-  padding: 20px 34px 18px;
+  min-height: 116px;
+  padding: 18px 36px 14px;
   background:
-    radial-gradient(circle at 50% 0, rgba(255, 214, 93, .18), transparent 42%),
-    linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, .22) 22%, rgba(16, 10, 11, .9) 100%);
+    radial-gradient(circle at 50% 16%, rgba(255, 214, 93, .12), transparent 34%),
+    linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, .18) 48%, rgba(0, 0, 0, .55) 100%);
 }
 
 .aac-balance-strip {

@@ -661,27 +661,6 @@
       return `<section class="aac-table-stage">
         <div class="aac-felt-table">
           ${this.renderDealer(hideHole)}
-          <div class="aac-table-copy">
-            <div class="aac-side-rules aac-rules-left">
-              <strong>Pair Pays</strong>
-              <span>Perfect 25:1</span>
-              <span>Colored 12:1</span>
-              <span>Red/Black 6:1</span>
-            </div>
-            <div class="aac-table-brand">
-              <span>Blackjack</span>
-              <strong>Ald Amil 21</strong>
-              <small>Insurance pays 2 to 1 · Dealer must draw to 16 and stand on all 17s</small>
-            </div>
-            <div class="aac-side-rules aac-rules-right">
-              <strong>21+3 Pays</strong>
-              <span>Suited Three 100:1</span>
-              <span>Straight Flush 40:1</span>
-              <span>Trips 30:1</span>
-              <span>Straight 10:1</span>
-              <span>Flush 5:1</span>
-            </div>
-          </div>
           ${settled ? this.renderPayoutRibbon() : ""}
           <div class="aac-seat-ring ${state.seats.length ? "" : "is-empty"}">
             ${state.seats.length ? state.seats.map((p, index) => this.renderSeat(p, currentId, index)).join("") : `<div class="aac-table-empty">Use <strong>!casino</strong> to open this table, then join a seat.</div>`}
