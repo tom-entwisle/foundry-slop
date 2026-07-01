@@ -1,32 +1,42 @@
 {
-  "id": "foundry-slop",
-  "title": "Foundry Slop",
-  "description": "A Foundry Virtual Tabletop module scaffold for version 14.",
-  "version": "0.1.0",
+  "id": "ald-amil-casino",
+  "title": "Ald Amil Casino",
+  "description": "A multiplayer blackjack table for Foundry VTT, styled as a Cogwright casino machine from Ald Amil.",
+  "version": "1.0.4",
   "authors": [
     {
-      "name": "Tom Entwisle"
+      "name": "Codex"
     }
   ],
   "compatibility": {
-    "minimum": "14",
-    "verified": "14",
-    "maximum": "14"
+    "minimum": "14.364",
+    "verified": "14.364",
+    "maximum": "14.364"
   },
-  "esmodules": [
-    "scripts/foundry-slop.js"
+  "relationships": {
+    "requires": [],
+    "systems": [],
+    "conflicts": []
+  },
+  "scripts": [
+    "scripts/ald-amil-casino.js"
   ],
+  "esmodules": [],
   "styles": [
-    "styles/foundry-slop.css"
+    "styles/ald-amil-casino.css"
   ],
-  "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
-    }
-  ],
+  "languages": [],
+  "packs": [],
+  "packFolders": [],
+  "media": [],
+  "socket": true,
+  "library": false,
+  "protected": false,
+  "exclusive": false,
+  "persistentStorage": false,
+  "readme": "README.md",
+  "license": "UNLICENSED",
   "url": "https://github.com/tom-entwisle/foundry-slop",
   "manifest": "https://raw.githubusercontent.com/tom-entwisle/foundry-slop/main/module.json",
-  "download": "https://github.com/tom-entwisle/foundry-slop/releases/download/v0.1.0/foundry-slop.zip"
+  "download": "https://github.com/tom-entwisle/foundry-slop/releases/download/v1.0.4/ald-amil-casino.zip"
 }

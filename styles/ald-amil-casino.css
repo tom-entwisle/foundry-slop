@@ -1,0 +1,644 @@
+.ald-amil-casino-window .window-content {
+  padding: 0;
+  overflow: auto;
+  background: #070908;
+}
+
+.aac-floating-window {
+  position: fixed;
+  top: 6vh;
+  left: 50%;
+  z-index: 100;
+  width: min(1120px, calc(100vw - 28px));
+  height: min(820px, calc(100vh - 28px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(244, 205, 112, .62);
+  border-radius: 8px;
+  background: #070908;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, .62);
+  resize: both;
+  transform: translateX(-50%);
+}
+
+.aac-window-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 34px;
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(244, 205, 112, .38);
+  background: linear-gradient(#202020, #101010);
+  color: #fff7df;
+  cursor: move;
+  user-select: none;
+}
+
+.aac-window-close {
+  width: 26px;
+  height: 24px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 5px;
+  background: rgba(0,0,0,.32);
+  color: #fff7df;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.aac-window-content {
+  flex: 1;
+  min-height: 0;
+}
+
+.ald-amil-casino-window {
+  min-width: 760px;
+  min-height: 680px;
+}
+
+#ald-amil-casino-launcher {
+  position: fixed;
+  left: 8px;
+  bottom: 92px;
+  z-index: 99;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  max-width: 172px;
+  padding: 7px 10px;
+  border: 1px solid rgba(244, 205, 112, .68);
+  border-radius: 8px;
+  background:
+    linear-gradient(145deg, rgba(18, 102, 81, .96), rgba(62, 34, 20, .96)),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.04), rgba(255,255,255,.04) 1px, transparent 1px, transparent 12px);
+  color: #fff7df;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.1;
+  box-shadow: 0 4px 14px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.12);
+  cursor: grab;
+  user-select: none;
+}
+
+#ald-amil-casino-launcher:hover {
+  border-color: rgba(255, 228, 153, .9);
+  box-shadow: 0 0 0 1px rgba(255, 228, 153, .12), 0 6px 18px rgba(0,0,0,.42), 0 0 18px rgba(244, 205, 112, .16);
+}
+
+#ald-amil-casino-launcher.aac-launcher-dragging {
+  cursor: grabbing;
+  transform: scale(1.02);
+}
+
+#ald-amil-casino-launcher i {
+  color: #f5d178;
+}
+
+.aac-shell {
+  min-width: 720px;
+  min-height: 680px;
+  color: #fff7df;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    repeating-linear-gradient(90deg, rgba(244, 205, 112, .035), rgba(244, 205, 112, .035) 1px, transparent 1px, transparent 36px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, .025), rgba(255, 255, 255, .025) 1px, transparent 1px, transparent 36px),
+    radial-gradient(circle at 16% 0%, rgba(245, 204, 103, .34), transparent 29%),
+    radial-gradient(circle at 82% 14%, rgba(48, 212, 176, .2), transparent 32%),
+    linear-gradient(145deg, #070b0b, #171213 48%, #071b18);
+  background-size: auto, auto, auto, auto, auto;
+  background-position: center;
+}
+
+.aac-shell * {
+  box-sizing: border-box;
+}
+
+.aac-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 156px minmax(0, 1fr) 150px;
+  gap: 24px;
+  align-items: center;
+  padding: 30px 34px 28px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(239, 198, 105, .42);
+  background:
+    linear-gradient(90deg, rgba(8, 72, 61, .94), rgba(74, 36, 39, .82)),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.04), rgba(255,255,255,.04) 1px, transparent 1px, transparent 18px);
+}
+
+.aac-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 0%, transparent 42%, rgba(255, 231, 157, .18) 50%, transparent 58%, transparent 100%);
+  transform: translateX(-80%);
+  animation: aac-scan 7s linear infinite;
+  pointer-events: none;
+}
+
+.aac-hero-art {
+  position: relative;
+  width: 132px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(244, 205, 112, .42);
+  border-radius: 999px;
+  background:
+    conic-gradient(from 15deg, rgba(244,205,112,.08), rgba(244,205,112,.44), rgba(12,64,54,.18), rgba(244,205,112,.08)),
+    radial-gradient(circle at 50% 50%, rgba(18, 102, 81, .75) 0 19%, transparent 20%),
+    repeating-conic-gradient(from 0deg, rgba(247, 216, 136, .72) 0deg 7deg, transparent 7deg 15deg),
+    radial-gradient(circle at 50% 50%, #342512 0 34%, #0d332d 35% 62%, #0b1312 63% 100%);
+  box-shadow: inset 0 0 32px rgba(0,0,0,.46), 0 0 34px rgba(231, 181, 82, .18);
+}
+
+.aac-hero-art::before,
+.aac-hero-art::after {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(245, 210, 130, .42);
+  border-radius: 999px;
+}
+
+.aac-hero-art::before {
+  background:
+    linear-gradient(90deg, transparent 48%, rgba(245, 210, 130, .58) 49% 51%, transparent 52%),
+    linear-gradient(0deg, transparent 48%, rgba(245, 210, 130, .42) 49% 51%, transparent 52%),
+    radial-gradient(circle at 50% 50%, transparent 0 26%, rgba(245, 210, 130, .28) 27% 29%, transparent 30%);
+}
+
+.aac-hero-art::after {
+  inset: 34px;
+  border-style: dashed;
+  animation: aac-spin 18s linear infinite;
+}
+
+.aac-kicker {
+  color: #f0cb78;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.aac-hero h1 {
+  margin: 4px 0 8px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(32px, 5vw, 56px);
+  line-height: .94;
+  color: #fffdf2;
+  text-shadow: 0 0 24px rgba(247, 209, 112, .28);
+}
+
+.aac-hero p {
+  max-width: 700px;
+  margin: 0;
+  color: #e0d4b8;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.aac-status {
+  display: grid;
+  gap: 5px;
+  padding: 14px;
+  border: 1px solid rgba(246, 211, 129, .34);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, .28);
+  text-align: right;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.aac-status span,
+.aac-status small,
+.aac-seat-head span,
+.aac-chip {
+  color: #f2d590;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.aac-status strong {
+  color: #fff7df;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.aac-main {
+  display: grid;
+  grid-template-columns: minmax(430px, 1fr) minmax(280px, 340px);
+  gap: 18px;
+  padding: 22px 24px 24px;
+}
+
+.aac-dealer,
+.aac-seat,
+.aac-controls,
+.aac-log,
+.aac-treasury {
+  border: 1px solid rgba(239, 198, 105, .28);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgba(255,255,255,.085), rgba(255,255,255,.028));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 14px 30px rgba(0,0,0,.24);
+  backdrop-filter: blur(2px);
+}
+
+.aac-dealer {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  z-index: 2;
+  width: min(470px, calc(100% - 64px));
+  padding: 16px;
+  transform: translateX(-50%);
+  background:
+    linear-gradient(150deg, rgba(35, 30, 31, .92), rgba(6, 45, 39, .84)),
+    repeating-linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.04) 1px, transparent 1px, transparent 14px);
+}
+
+.aac-table-stage {
+  min-width: 0;
+}
+
+.aac-felt-table {
+  position: relative;
+  min-height: 690px;
+  overflow: hidden;
+  border: 1px solid rgba(239, 198, 105, .42);
+  border-radius: 48% 48% 10px 10px / 42% 42% 10px 10px;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(29, 136, 99, .94), rgba(8, 71, 59, .95) 58%, rgba(5, 34, 33, .98) 100%),
+    repeating-radial-gradient(ellipse at 50% 50%, rgba(255,255,255,.035), rgba(255,255,255,.035) 1px, transparent 1px, transparent 22px);
+  box-shadow:
+    inset 0 0 0 16px rgba(108, 63, 24, .82),
+    inset 0 0 0 19px rgba(246, 207, 114, .32),
+    inset 0 0 80px rgba(0,0,0,.38),
+    0 18px 42px rgba(0,0,0,.34);
+}
+
+.aac-felt-table::before {
+  content: "";
+  position: absolute;
+  inset: 34px;
+  border: 1px solid rgba(247, 211, 134, .24);
+  border-radius: 48% 48% 12px 12px / 40% 40% 12px 12px;
+  pointer-events: none;
+}
+
+.aac-table-brand {
+  position: absolute;
+  top: 224px;
+  left: 50%;
+  display: grid;
+  gap: 4px;
+  width: 280px;
+  transform: translateX(-50%);
+  color: rgba(255, 244, 210, .5);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  pointer-events: none;
+}
+
+.aac-table-brand span,
+.aac-table-brand small {
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.aac-table-brand strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 72px;
+  line-height: .8;
+  color: rgba(255, 238, 181, .18);
+  text-shadow: 0 0 24px rgba(255, 224, 148, .12);
+}
+
+.aac-panel-title,
+.aac-seat-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.aac-player-id {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
+.aac-player-id img,
+.aac-token-fallback {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(244, 205, 112, .48);
+  border-radius: 999px;
+  object-fit: cover;
+  background: radial-gradient(circle at 40% 30%, rgba(244,205,112,.28), rgba(0,0,0,.24));
+  box-shadow: inset 0 0 12px rgba(0,0,0,.34), 0 0 16px rgba(244,205,112,.12);
+}
+
+.aac-token-fallback {
+  display: grid;
+  place-items: center;
+  color: #f4d486;
+  font-weight: 950;
+}
+
+.aac-panel-title h2,
+.aac-seat h3 {
+  margin: 2px 0 0;
+  color: #fff9e8;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+}
+
+.aac-hand {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 70px;
+  margin: 13px 0;
+}
+
+.aac-card {
+  width: 52px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(95, 65, 35, .62);
+  border-radius: 8px;
+  background: linear-gradient(145deg, #fffef8, #e5d3ad);
+  color: #171313;
+  font-weight: 950;
+  box-shadow: 0 9px 18px rgba(0,0,0,.34);
+}
+
+.aac-card.is-red {
+  color: #a71924;
+}
+
+.aac-card-back {
+  color: #f8d986;
+  background: repeating-linear-gradient(45deg, #0c4a40, #0c4a40 5px, #176b58 5px, #176b58 10px);
+}
+
+.aac-machine,
+.aac-meters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.aac-machine span,
+.aac-meters span,
+.aac-chip {
+  padding: 6px 9px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  background: rgba(0,0,0,.25);
+  color: #e9ddbd;
+  font-size: 12px;
+}
+
+.aac-seat-ring {
+  position: absolute;
+  inset: 0;
+}
+
+.aac-seat {
+  position: absolute;
+  z-index: 3;
+  width: 218px;
+  padding: 15px;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.aac-seat.is-turn {
+  border-color: rgba(73, 225, 171, .82);
+  box-shadow: 0 0 0 1px rgba(73, 225, 171, .18), 0 0 28px rgba(73, 225, 171, .14);
+}
+
+.aac-seat.is-busted {
+  border-color: rgba(221, 95, 83, .62);
+}
+
+.aac-empty {
+  position: absolute;
+  left: 50%;
+  bottom: 92px;
+  width: min(360px, calc(100% - 64px));
+  min-height: 150px;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  transform: translateX(-50%);
+  border: 1px dashed rgba(255,255,255,.22);
+  border-radius: 8px;
+  color: #cfc0a2;
+  background: rgba(0,0,0,.18);
+  text-align: center;
+}
+
+.aac-seat-0 { left: 50%; bottom: 28px; transform: translateX(-50%); }
+.aac-seat-1 { left: 9%; bottom: 72px; }
+.aac-seat-2 { right: 9%; bottom: 72px; }
+.aac-seat-3 { left: 5%; bottom: 238px; }
+.aac-seat-4 { right: 5%; bottom: 238px; }
+.aac-seat-5 { left: 20%; top: 168px; }
+.aac-seat-6 { right: 20%; top: 168px; }
+
+.aac-seat-0.is-turn { transform: translateX(-50%) translateY(-3px); }
+.aac-seat-1.is-turn,
+.aac-seat-2.is-turn,
+.aac-seat-3.is-turn,
+.aac-seat-4.is-turn,
+.aac-seat-5.is-turn,
+.aac-seat-6.is-turn { transform: translateY(-3px); }
+
+.aac-muted {
+  color: #cfc0a2;
+  font-size: 13px;
+}
+
+.aac-side {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+
+.aac-controls,
+.aac-log,
+.aac-treasury {
+  padding: 14px;
+}
+
+.aac-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.aac-buttons button,
+.aac-account button {
+  min-height: 40px;
+  border: 1px solid #e1b963;
+  border-radius: 8px;
+  background: linear-gradient(#126651, #0b453b);
+  color: #fffbed;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.aac-buttons button.primary {
+  background: linear-gradient(#8b5a1f, #54330e);
+}
+
+.aac-buttons button.danger {
+  border-color: #d96a5d;
+  background: linear-gradient(#753331, #421d1d);
+}
+
+.aac-buttons button:disabled,
+.aac-account button:disabled {
+  opacity: .42;
+  cursor: default;
+}
+
+.aac-account {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 46px 46px 46px;
+  gap: 6px;
+  align-items: center;
+  padding: 9px 0;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.aac-account:first-of-type {
+  border-top: 0;
+}
+
+.aac-account strong,
+.aac-account span {
+  display: block;
+}
+
+.aac-account span {
+  color: #f2d590;
+  font-size: 12px;
+}
+
+.aac-log-line {
+  padding: 8px 0;
+  border-top: 1px solid rgba(255,255,255,.08);
+  color: #dcd0b4;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.aac-log-line:first-of-type {
+  border-top: 0;
+}
+
+@keyframes aac-scan {
+  0% { transform: translateX(-80%); }
+  45% { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes aac-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 940px) {
+  .ald-amil-casino-window {
+    min-width: 520px;
+  }
+
+  .aac-shell {
+    min-width: 500px;
+  }
+
+  .aac-hero {
+    grid-template-columns: 110px 1fr;
+  }
+
+  .aac-status {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+
+  .aac-main {
+    grid-template-columns: 1fr;
+  }
+
+  .aac-felt-table {
+    min-height: 940px;
+    border-radius: 36px;
+  }
+
+  .aac-dealer,
+  .aac-seat {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    width: auto;
+    transform: none;
+  }
+
+  .aac-felt-table {
+    display: grid;
+    gap: 12px;
+    padding: 24px;
+  }
+
+  .aac-table-brand {
+    display: none;
+  }
+
+  .aac-seat-ring {
+    position: relative;
+    display: grid;
+    gap: 12px;
+  }
+
+  .aac-empty {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    width: auto;
+    transform: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .ald-amil-casino-window {
+    min-width: 360px;
+  }
+
+  .aac-shell {
+    min-width: 360px;
+  }
+
+  .aac-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .aac-hero-art {
+    display: none;
+  }
+
+  .aac-main {
+    padding: 16px;
+  }
+}

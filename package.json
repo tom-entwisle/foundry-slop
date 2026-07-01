@@ -1,8 +1,8 @@
 {
-  "name": "foundry-slop",
-  "version": "0.1.0",
+  "name": "ald-amil-casino",
+  "version": "1.0.4",
   "private": true,
-  "description": "Foundry VTT v14 module scaffold.",
+  "description": "A multiplayer blackjack table for Foundry VTT v14.",
   "scripts": {
     "package": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package.ps1"
   }
