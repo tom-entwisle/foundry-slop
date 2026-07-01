@@ -563,7 +563,7 @@
   }
 
   function renderHand(hand, hideHole = false) {
-    if (!hand?.length) return `<span class="aac-muted">No cards yet.</span>`;
+    if (!hand?.length) return "";
     return hand.map((card, index) => renderCard(card, hideHole && index === 1)).join("");
   }
 
