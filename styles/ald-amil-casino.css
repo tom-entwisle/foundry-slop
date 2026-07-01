@@ -251,7 +251,7 @@
   height: 580px;
   min-height: 0;
   display: grid;
-  grid-template-rows: 98px 48px 28px minmax(0, 1fr);
+  grid-template-rows: 128px 46px 28px minmax(0, 1fr);
   gap: 10px;
   padding: 18px 20px 20px;
   overflow: hidden;
@@ -328,7 +328,7 @@
   left: auto;
   z-index: 3;
   width: 100%;
-  padding: 9px 10px;
+  padding: 10px 12px;
   justify-self: center;
   transform: none;
   background:
@@ -373,35 +373,35 @@
 }
 
 .aac-dealer .aac-hand {
-  min-height: 42px;
-  max-height: 54px;
-  margin: 6px 0;
-  overflow: hidden;
+  min-height: 56px;
+  max-height: 64px;
+  margin: 7px 0;
+  overflow: visible;
 }
 
 .aac-dealer .aac-card {
-  width: 36px;
-  height: 50px;
+  width: 44px;
+  height: 62px;
   border-radius: 6px;
 }
 
 .aac-dealer .aac-card-corner {
   top: 4px;
-  left: 4px;
-  font-size: 10px;
+  left: 5px;
+  font-size: 12px;
 }
 
 .aac-dealer .aac-card-corner small {
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .aac-dealer .aac-card-corner.is-bottom {
-  right: 4px;
+  right: 5px;
   bottom: 4px;
 }
 
 .aac-dealer .aac-card-face {
-  font-size: 18px;
+  font-size: 23px;
 }
 
 .aac-card {
@@ -507,10 +507,24 @@
   inset: auto;
   z-index: 4;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-auto-rows: 148px;
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  grid-auto-rows: 188px;
+  gap: 12px;
   min-height: 0;
+}
+
+.aac-seat-ring.is-empty {
+  display: grid;
+  place-items: center;
+}
+
+.aac-seat-ring:not(.is-empty) {
+  align-content: start;
+}
+
+.aac-seat-ring:has(.aac-seat:nth-child(1):last-child),
+.aac-seat-ring:has(.aac-seat:nth-child(2):last-child) {
+  grid-template-columns: repeat(2, minmax(250px, 1fr));
 }
 
 .aac-seat {
@@ -518,13 +532,13 @@
   z-index: 4;
   width: auto;
   min-width: 0;
-  height: 148px;
-  max-height: 148px;
-  padding: 9px;
+  height: 188px;
+  max-height: 188px;
+  padding: 12px;
   overflow: hidden;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  gap: 6px;
+  grid-template-rows: auto 72px auto;
+  gap: 9px;
   transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease, opacity .2s ease;
 }
 
@@ -554,16 +568,16 @@
 
 .aac-player-id {
   display: grid;
-  grid-template-columns: 32px minmax(0, 1fr);
-  gap: 7px;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 9px;
   align-items: center;
   min-width: 0;
 }
 
 .aac-player-id img,
 .aac-token-fallback {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border: 1px solid rgba(255, 215, 106, .5);
   border-radius: 50%;
   object-fit: cover;
@@ -579,8 +593,8 @@
 }
 
 .aac-seat h3 {
-  font-size: 12px;
-  max-width: 72px;
+  font-size: 14px;
+  max-width: 110px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -589,7 +603,7 @@
 .aac-seat-status {
   padding-top: 2px;
   color: var(--aac-green);
-  max-width: 68px;
+  max-width: 90px;
   text-align: right;
   white-space: normal;
   overflow-wrap: anywhere;
@@ -609,35 +623,36 @@
 }
 
 .aac-seat .aac-hand {
-  max-height: 48px;
-  min-height: 48px;
-  overflow: visible;
+  max-height: 72px;
+  min-height: 72px;
+  overflow: hidden;
+  align-content: flex-start;
 }
 
 .aac-seat .aac-card {
-  width: 28px;
-  height: 40px;
+  width: 42px;
+  height: 60px;
   border-radius: 6px;
   box-shadow: 0 5px 10px rgba(0,0,0,.32);
 }
 
 .aac-seat .aac-card-corner {
-  top: 3px;
-  left: 3px;
-  font-size: 9px;
+  top: 4px;
+  left: 5px;
+  font-size: 12px;
 }
 
 .aac-seat .aac-card-corner small {
-  font-size: 8px;
+  font-size: 10px;
 }
 
 .aac-seat .aac-card-corner.is-bottom {
-  right: 3px;
-  bottom: 3px;
+  right: 5px;
+  bottom: 4px;
 }
 
 .aac-seat .aac-card-face {
-  font-size: 16px;
+  font-size: 23px;
 }
 
 .aac-meters span {
@@ -664,29 +679,15 @@
   color: var(--aac-gold);
 }
 
-.aac-empty-seat {
-  display: grid;
-  place-items: center;
-  min-height: 100%;
-  border-style: dashed;
-  opacity: .54;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(255, 215, 106, .09), transparent 56%),
-    rgba(0, 0, 0, .12);
-}
-
-.aac-empty-ring {
-  width: 58px;
-  height: 58px;
-  display: grid;
-  place-items: center;
-  border: 2px dashed rgba(255, 215, 106, .32);
-  border-radius: 50%;
-  color: rgba(255, 244, 207, .72);
-  font-size: 10px;
-  font-weight: 950;
-  letter-spacing: .9px;
-  text-transform: uppercase;
+.aac-table-empty {
+  padding: 18px 22px;
+  border: 1px dashed rgba(255, 215, 106, .28);
+  border-radius: 8px;
+  background: rgba(0,0,0,.24);
+  color: rgba(255, 244, 207, .78);
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
 }
 
 .aac-seat-0,
@@ -1001,15 +1002,12 @@
     gap: 12px;
   }
 
-  .aac-empty-seat {
-    min-height: 90px;
-  }
 }
 
 @media (max-height: 740px) and (min-width: 1041px) {
   .aac-felt-table {
     height: 560px;
-    grid-template-rows: 94px 44px 24px minmax(0, 1fr);
+    grid-template-rows: 116px 42px 24px minmax(0, 1fr);
   }
 
   .aac-dealer {
@@ -1017,12 +1015,12 @@
   }
 
   .aac-seat {
-    height: 138px;
-    max-height: 138px;
+    height: 174px;
+    max-height: 174px;
   }
 
   .aac-seat-ring {
-    grid-auto-rows: 138px;
+    grid-auto-rows: 174px;
   }
 }
 
