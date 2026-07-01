@@ -703,7 +703,6 @@
             </div>
             <div class="aac-buttons">${this.renderControls(mySeat)}</div>
             ${game.user.isGM ? `<div class="aac-gm-tools">
-              <button class="aac-action aac-round-control utility" data-aac-action="test-user"><strong>+</strong><span>User</span></button>
               <button class="aac-action aac-round-control danger utility" data-aac-action="reset"><strong>Reset</strong><span>Table</span></button>
             </div>` : ""}
           </div>
@@ -712,8 +711,9 @@
     }
 
     renderDealer(hideHole) {
+      const dealerBlackjack = state.dealer.hand?.length === 2 && handValue(state.dealer.hand).total === 21;
       return `<section class="aac-dealer">
-        <div class="aac-hand">${renderHand(state.dealer.hand, hideHole)}</div>
+        <div class="aac-hand ${dealerBlackjack ? "is-blackjack" : ""}">${renderHand(state.dealer.hand, hideHole)}</div>
         <span class="aac-dealer-total">${esc(renderValue(state.dealer.hand, hideHole))}</span>
       </section>`;
     }
@@ -733,12 +733,12 @@
     renderSeat(p, currentId, index = 0) {
       const account = ensureAccount(state, p);
       const image = p.image || account.image || "";
-      const status = p.out ? "Out" : p.result || (p.ready ? "Ready" : p.standing ? "Stand" : p.busted ? "Bust" : p.surrendered ? "Surrender" : p.blackjack ? "Blackjack" : currentId === p.userId ? "Action" : "Seated");
+      const status = p.out ? "Out" : (state.phase === "settled" ? "Seated" : p.ready ? "Ready" : p.standing ? "Stand" : p.busted ? "Bust" : p.surrendered ? "Surrender" : currentId === p.userId ? "Action" : "Seated");
       const delta = Number(p.lastDelta || 0);
       const resultClass = delta > 0 ? "is-win" : delta < 0 ? "is-loss" : p.result ? "is-push" : "";
       return `<article class="aac-seat aac-seat-${index} ${currentId === p.userId ? "is-turn" : ""} ${p.userId === game.user.id ? "is-mine" : ""} ${p.out || p.busted ? "is-busted" : ""} ${resultClass}">
         <span class="aac-seat-status">${esc(status)}</span>
-        <div class="aac-hand">${renderHand(p.hand)}</div>
+        <div class="aac-hand ${p.blackjack ? "is-blackjack" : ""}">${renderHand(p.hand)}</div>
         <div class="aac-player-id">
           ${image ? `<img src="${esc(image)}" alt="">` : `<span class="aac-token-fallback">${esc((p.name || "?").slice(0, 1))}</span>`}
           <h3>${esc(p.name)}</h3>

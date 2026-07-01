@@ -268,6 +268,27 @@
   min-width: 0;
 }
 
+.aac-hand.is-blackjack {
+  position: relative;
+}
+
+.aac-hand.is-blackjack::before {
+  content: "";
+  position: absolute;
+  inset: -9px -12px -8px;
+  z-index: 0;
+  border: 2px solid rgba(255, 226, 104, .88);
+  border-radius: 12px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(255, 214, 93, .22), transparent 68%);
+  box-shadow: 0 0 18px rgba(255, 214, 93, .78), inset 0 0 14px rgba(255, 214, 93, .34);
+  animation: aac-blackjack-glow 1.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.aac-hand.is-blackjack .aac-card {
+  z-index: 1;
+}
+
 .aac-muted {
   color: rgba(255, 247, 220, .82);
   font-size: 13px;
@@ -495,6 +516,7 @@
 
 .aac-meters {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 6px;
   width: 160px;
@@ -529,10 +551,14 @@
 }
 
 .aac-delta {
-  position: absolute;
-  left: 50%;
-  bottom: -15px;
-  transform: translateX(-50%);
+  flex: 0 0 auto;
+  min-width: 74px !important;
+  margin-top: 2px;
+}
+
+.aac-delta small,
+.aac-delta strong {
+  color: #fff7d2;
 }
 
 .aac-table-empty {
@@ -683,7 +709,7 @@
 }
 
 .aac-gm-tools .aac-round-control strong {
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .aac-gm-tools .aac-round-control span {
@@ -838,6 +864,19 @@
 @keyframes aac-card-in {
   from { opacity: 0; transform: translateY(-10px) rotate(-2deg) scale(.96); }
   to { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
+}
+
+@keyframes aac-blackjack-glow {
+  0%, 100% {
+    opacity: .76;
+    filter: brightness(1);
+    transform: scale(.985);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.18);
+    transform: scale(1.025);
+  }
 }
 
 @media (max-height: 730px) {
