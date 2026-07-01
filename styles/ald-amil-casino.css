@@ -395,15 +395,6 @@
   content: none;
 }
 
-.aac-seat.is-win .aac-seat-status {
-  background: linear-gradient(#ffe36e, #bd7b14);
-}
-
-.aac-seat.is-loss .aac-seat-status,
-.aac-seat.is-busted .aac-seat-status {
-  background: linear-gradient(#fb5c68, #8b101b);
-}
-
 .aac-seat-0 { left: 50%; top: 68.4%; }
 .aac-seat-1 { left: 35.1%; top: 66.3%; }
 .aac-seat-2 { left: 64.9%; top: 66.3%; }
@@ -462,17 +453,66 @@
   top: 55px;
   right: 0;
   z-index: 6;
-  width: 76px;
+  width: 82px;
   min-height: 30px;
-  padding: 3px 8px;
+  padding: 3px 7px;
   border: 2px solid rgba(255, 255, 255, .22);
   background: linear-gradient(#292f3c, #11151d);
-  font-size: 8px;
+  font-size: 7.5px;
   line-height: 1;
   text-transform: uppercase;
   white-space: normal;
   word-break: normal;
   overflow: hidden;
+}
+
+.aac-seat-status.is-action {
+  background: linear-gradient(#36ed9b, #087a50);
+  border-color: rgba(154, 255, 215, .68);
+  box-shadow: 0 0 16px rgba(29, 233, 151, .48);
+}
+
+.aac-seat-status.is-wait {
+  background: linear-gradient(#46556a, #1c2633);
+  border-color: rgba(185, 211, 255, .34);
+}
+
+.aac-seat-status.is-ready,
+.aac-seat-status.is-seated {
+  background: linear-gradient(#3be1ac, #0c735b);
+  border-color: rgba(160, 255, 222, .46);
+}
+
+.aac-seat-status.is-betting {
+  background: linear-gradient(#f4c54b, #8e5812);
+  border-color: rgba(255, 240, 150, .58);
+}
+
+.aac-seat-status.is-stand,
+.aac-seat-status.is-push,
+.aac-seat-status.is-settled {
+  background: linear-gradient(#6f7f98, #283242);
+  border-color: rgba(220, 230, 255, .34);
+}
+
+.aac-seat-status.is-win,
+.aac-seat-status.is-blackjack {
+  background: linear-gradient(#fff17d, #ca8212);
+  border-color: rgba(255, 246, 182, .72);
+  box-shadow: 0 0 18px rgba(255, 214, 93, .5);
+  color: #fffbe8;
+}
+
+.aac-seat-status.is-bust,
+.aac-seat-status.is-lose,
+.aac-seat-status.is-out {
+  background: linear-gradient(#fb5c68, #8b101b);
+  border-color: rgba(255, 175, 185, .62);
+}
+
+.aac-seat-status.is-surrender {
+  background: linear-gradient(#b46cff, #57205f);
+  border-color: rgba(231, 193, 255, .56);
 }
 
 .aac-player-id {
@@ -633,31 +673,6 @@
   background:
     radial-gradient(circle at 50% 16%, rgba(255, 214, 93, .12), transparent 34%),
     linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, .18) 48%, rgba(0, 0, 0, .55) 100%);
-}
-
-.aac-balance-strip {
-  display: flex;
-  align-items: end;
-  gap: 42px;
-  color: #fff5c9;
-  text-transform: uppercase;
-}
-
-.aac-balance-strip span {
-  display: grid;
-  gap: 2px;
-  min-width: 94px;
-}
-
-.aac-balance-strip small {
-  color: #d7b267;
-  font-size: 10px;
-  font-weight: 950;
-}
-
-.aac-balance-strip strong {
-  font-size: 18px;
-  line-height: 1;
 }
 
 .aac-buttons {

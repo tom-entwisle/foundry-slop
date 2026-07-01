@@ -695,10 +695,6 @@
           </div>
           ${state.phase === "betting" ? `<div class="aac-countdown" style="--aac-tick:${BETTING_SECONDS - countdown};"><div class="aac-countdown-face"><span>Betting closes in</span><strong>${countdown}</strong></div></div>` : ""}
           <div class="aac-bottom-rail">
-            <div class="aac-balance-strip">
-              <span><small>Balance</small><strong>${myGold}g</strong></span>
-              <span><small>Total Bet</small><strong>${mySeat?.bet || 0}g</strong></span>
-            </div>
             <div class="aac-buttons">${this.renderControls(mySeat)}</div>
             ${game.user.isGM ? `<div class="aac-gm-tools">
               <button class="aac-action aac-round-control danger utility" data-aac-action="reset"><strong>Reset</strong><span>Table</span></button>
@@ -719,11 +715,11 @@
     renderSeat(p, currentId, index = 0) {
       const account = ensureAccount(state, p);
       const image = p.image || account.image || "";
-      const status = p.out ? "Out" : (state.phase === "settled" ? "Seated" : p.ready ? "Ready" : p.standing ? "Stand" : p.busted ? "Bust" : p.surrendered ? "Surrender" : currentId === p.userId ? "Action" : "Seated");
+      const status = this.seatStatus(p, currentId);
       const delta = Number(p.lastDelta || 0);
       const resultClass = delta > 0 ? "is-win" : delta < 0 ? "is-loss" : p.result ? "is-push" : "";
       return `<article class="aac-seat aac-seat-${index} ${currentId === p.userId ? "is-turn" : ""} ${p.userId === game.user.id ? "is-mine" : ""} ${p.out || p.busted ? "is-busted" : ""} ${resultClass}">
-        <span class="aac-seat-status">${esc(status)}</span>
+        <span class="aac-seat-status is-${esc(status.tone)}">${esc(status.label)}</span>
         <div class="aac-hand ${p.blackjack ? "is-blackjack" : ""}">${renderHand(p.hand)}</div>
         <div class="aac-player-id">
           ${image ? `<img src="${esc(image)}" alt="">` : `<span class="aac-token-fallback">${esc((p.name || "?").slice(0, 1))}</span>`}
@@ -736,6 +732,29 @@
           ${p.result ? `<span class="aac-delta"><small>${esc(p.result)}</small><strong>${delta >= 0 ? "+" : ""}${delta}g</strong></span>` : ""}
         </div>
       </article>`;
+    }
+
+    seatStatus(p, currentId) {
+      if (p.out) return { label: "Out", tone: "out" };
+      if (state.phase === "settled") {
+        if (p.blackjack || p.result === "Blackjack") return { label: "Blackjack", tone: "blackjack" };
+        if (p.busted || p.result === "Bust") return { label: "Bust", tone: "bust" };
+        if (p.surrendered || p.result === "Surrender") return { label: "Surrender", tone: "surrender" };
+        if (p.result === "Dealer Bust") return { label: "Dealer Bust", tone: "win" };
+        if (p.result === "Win") return { label: "Win", tone: "win" };
+        if (p.result === "Dealer Blackjack") return { label: "Dealer BJ", tone: "lose" };
+        if (p.result === "Lose") return { label: "Lose", tone: "lose" };
+        if (p.result === "Push") return { label: "Push", tone: "push" };
+        return { label: "Settled", tone: "settled" };
+      }
+      if (p.blackjack) return { label: "Blackjack", tone: "blackjack" };
+      if (p.busted) return { label: "Bust", tone: "bust" };
+      if (p.surrendered) return { label: "Surrender", tone: "surrender" };
+      if (p.standing) return { label: "Stand", tone: "stand" };
+      if (currentId === p.userId) return { label: "Action", tone: "action" };
+      if (state.phase === "playing" && p.inHand) return { label: "Wait", tone: "wait" };
+      if (state.phase === "betting") return p.ready ? { label: "Ready", tone: "ready" } : { label: "Betting", tone: "betting" };
+      return { label: "Seated", tone: "seated" };
     }
 
     renderControls(mySeat) {
