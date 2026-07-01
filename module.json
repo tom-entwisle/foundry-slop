@@ -2,14 +2,14 @@
   "id": "ald-amil-casino",
   "title": "Ald Amil Casino",
   "description": "A multiplayer blackjack table for Foundry VTT, styled as a Cogwright casino machine from Ald Amil.",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "authors": [
     {
       "name": "Codex"
     }
   ],
   "compatibility": {
-    "minimum": "14.364",
+    "minimum": "14.363",
     "verified": "14.364",
     "maximum": "14.364"
   },
