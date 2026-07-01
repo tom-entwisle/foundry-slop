@@ -710,7 +710,7 @@
       const status = p.out ? "Out" : p.result || (p.ready ? "Ready" : p.standing ? "Stand" : p.busted ? "Bust" : p.surrendered ? "Surrender" : p.blackjack ? "Blackjack" : currentId === p.userId ? "Action" : "Seated");
       const delta = Number(p.lastDelta || 0);
       const resultClass = delta > 0 ? "is-win" : delta < 0 ? "is-loss" : p.result ? "is-push" : "";
-      return `<article class="aac-seat aac-seat-${index} ${currentId === p.userId ? "is-turn" : ""} ${p.out || p.busted ? "is-busted" : ""} ${resultClass}">
+      return `<article class="aac-seat aac-seat-${index} ${currentId === p.userId ? "is-turn" : ""} ${p.userId === game.user.id ? "is-mine" : ""} ${p.out || p.busted ? "is-busted" : ""} ${resultClass}">
         <div class="aac-seat-head">
           <div class="aac-player-id">
             ${image ? `<img src="${esc(image)}" alt="">` : `<span class="aac-token-fallback">${esc((p.name || "?").slice(0, 1))}</span>`}
