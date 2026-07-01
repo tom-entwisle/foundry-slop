@@ -347,17 +347,19 @@
       ui.notifications?.warn("Only the DM can adjust casino gold.");
       return;
     }
-    const [, userId, amountText] = action.split(":");
+    const [, mode, userId, amountText] = action.split(":");
     const account = s.accounts[userId];
     const amount = Math.floor(Number(amountText));
     if (!account || !Number.isFinite(amount)) return;
-    account.gold = Math.max(0, account.gold + amount);
+    const previous = Number(account.gold || 0);
+    account.gold = Math.max(0, mode === "set" ? amount : previous + amount);
     const playerSeat = seat(s, userId);
     if (playerSeat) {
       playerSeat.out = account.gold < MIN_BET;
       playerSeat.bet = account.gold >= MIN_BET ? clamp(playerSeat.bet || MIN_BET, MIN_BET, account.gold) : 0;
     }
-    addLog(s, `DM adjusts ${account.name}'s gold by ${amount >= 0 ? "+" : ""}${amount}g.`);
+    if (mode === "set") addLog(s, `DM sets ${account.name}'s gold to ${account.gold}g.`);
+    else addLog(s, `DM adjusts ${account.name}'s gold by ${amount >= 0 ? "+" : ""}${amount}g.`);
   }
 
   function findAccountByName(s, name) {
@@ -813,15 +815,27 @@
     const text = raw.includes("<")
       ? htmlFromString(`<div>${raw}</div>`)?.textContent?.trim() || raw
       : raw;
-    const match = text.match(/^!(?:casino|aldamil)\s+(.+?)\s+([+-]\d+)g?$/i);
-    if (!match) return null;
-    return { playerName: match[1].trim(), amount: Number(match[2]) };
+    if (/^!(?:casino|aldamil)\s+reset$/i.test(text)) return { type: "reset" };
+    const setMatch = text.match(/^!(?:casino|aldamil)\s+"([^"]+)"\s+(\d+)g?$/i);
+    if (setMatch) return { type: "gold", mode: "set", playerName: setMatch[1].trim(), amount: Number(setMatch[2]) };
+    const spacedDeltaMatch = text.match(/^!(?:casino|aldamil)\s+"([^"]+)"\s+([+-])\s+(\d+)g?$/i);
+    if (spacedDeltaMatch) {
+      const sign = spacedDeltaMatch[2] === "-" ? -1 : 1;
+      return { type: "gold", mode: "delta", playerName: spacedDeltaMatch[1].trim(), amount: sign * Number(spacedDeltaMatch[3]) };
+    }
+    const legacyDeltaMatch = text.match(/^!(?:casino|aldamil)\s+(.+?)\s+([+-]\d+)g?$/i);
+    if (legacyDeltaMatch) return { type: "gold", mode: "delta", playerName: legacyDeltaMatch[1].trim(), amount: Number(legacyDeltaMatch[2]) };
+    return null;
   }
 
-  async function handleGoldChatCommand(command) {
+  async function handleCasinoChatCommand(command) {
     ensureState();
     if (!game.user.isGM) {
-      ui.notifications?.warn("Only the DM can adjust casino gold.");
+      ui.notifications?.warn("Only the DM can use that casino command.");
+      return;
+    }
+    if (command.type === "reset") {
+      await requestAction("reset");
       return;
     }
     const target = findAccountByName(state, command.playerName);
@@ -829,7 +843,7 @@
       ui.notifications?.warn(`No casino account found for "${command.playerName}".`);
       return;
     }
-    await requestAction(`gold:${target.userId}:${command.amount}`);
+    await requestAction(`gold:${command.mode}:${target.userId}:${command.amount}`);
   }
 
   function readInputValue(target) {
@@ -847,12 +861,12 @@
 
   function handleLaunchCommand(target, event) {
     const value = readInputValue(target);
-    const goldCommand = parseCasinoCommand(value);
-    if (goldCommand) {
+    const casinoCommand = parseCasinoCommand(value);
+    if (casinoCommand) {
       event?.preventDefault?.();
       event?.stopPropagation?.();
       clearInputValue(target);
-      handleGoldChatCommand(goldCommand);
+      handleCasinoChatCommand(casinoCommand);
       return true;
     }
     if (!isLaunchCommand(value)) return false;
@@ -983,9 +997,9 @@
     chatInterceptorInstalled = true;
     Hooks.on("chatMessage", (_chatLog, messageText, chatData) => {
       messageText ||= chatData?.content;
-      const goldCommand = parseCasinoCommand(messageText);
-      if (goldCommand) {
-        handleGoldChatCommand(goldCommand);
+      const casinoCommand = parseCasinoCommand(messageText);
+      if (casinoCommand) {
+        handleCasinoChatCommand(casinoCommand);
         return false;
       }
       if (!isLaunchCommand(messageText)) return true;
