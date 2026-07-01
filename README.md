@@ -10,7 +10,7 @@ Use this manifest URL in Foundry's module installer:
 https://raw.githubusercontent.com/tom-entwisle/foundry-slop/main/module.json
 ```
 
-The module release package is expected at:
+The module package is expected at:
 
 ```text
 https://raw.githubusercontent.com/tom-entwisle/foundry-slop/main/ald-amil-casino.zip

@@ -483,6 +483,15 @@
     game.socket.emit(SOCKET, { type: "action", action, actor: who });
   }
 
+  function ensureState() {
+    if (state) return;
+    try {
+      state = normalizeState(game.settings.get(MODULE_ID, "state"));
+    } catch (_err) {
+      state = freshState();
+    }
+  }
+
   function renderCard(card, hidden = false) {
     if (hidden) return `<span class="aac-card aac-card-back"><span>◆</span></span>`;
     const rank = card.slice(0, -1);
@@ -731,13 +740,22 @@
   }
 
   function openCasino() {
+    ensureState();
     if (!casinoApp) casinoApp = new AldAmilCasinoApp();
     renderCasinoApp(true);
-    if (isCoordinator()) game.socket.emit(SOCKET, { type: "state", state });
+    try {
+      if (isCoordinator()) game.socket.emit(SOCKET, { type: "state", state });
+    } catch (_err) {
+      // Opening the casino should still work if socket sync is unavailable.
+    }
   }
 
   function isLaunchCommand(value) {
-    return ["/casino", "/aldamil", "/ald-amil-casino", "!casino", "!aldamil"].includes(String(value || "").trim().toLowerCase());
+    const raw = String(value || "").trim();
+    const text = raw.includes("<")
+      ? htmlFromString(`<div>${raw}</div>`)?.textContent?.trim() || raw
+      : raw;
+    return ["/casino", "/aldamil", "/ald-amil-casino", "!casino", "!aldamil"].includes(text.toLowerCase());
   }
 
   function readInputValue(target) {
@@ -880,7 +898,8 @@
   function installChatCommandInterceptor() {
     if (chatInterceptorInstalled) return;
     chatInterceptorInstalled = true;
-    Hooks.on("chatMessage", (_chatLog, messageText) => {
+    Hooks.on("chatMessage", (_chatLog, messageText, chatData) => {
+      messageText ||= chatData?.content;
       if (!isLaunchCommand(messageText)) return true;
       openCasino();
       return false;
@@ -919,29 +938,34 @@
   });
 
   Hooks.once("ready", () => {
-    state = normalizeState(game.settings.get(MODULE_ID, "state"));
-
-    game.socket.on(SOCKET, async payload => {
-      if (payload.type === "state") {
-        state = normalizeState(payload.state);
-        renderCasinoApp(false);
-        return;
-      }
-      if (payload.type === "action" && isCoordinator()) {
-        if (payload.action === "reset" || payload.action?.startsWith("gold:")) return;
-        await setState(applyAction(state, payload.action, trustedActor(payload.actor)));
-      }
-      if (payload.type === "sync" && isCoordinator()) {
-        game.socket.emit(SOCKET, { type: "state", state });
-      }
-    });
-
-    if (!isCoordinator()) game.socket.emit(SOCKET, { type: "sync" });
+    ensureState();
     game.aldAmilCasino = {
       open: openCasino,
       action: requestAction,
       get state() { return state; }
     };
     installChatCommandInterceptor();
+    installLauncherButton();
+
+    try {
+      game.socket.on(SOCKET, async payload => {
+        if (payload.type === "state") {
+          state = normalizeState(payload.state);
+          renderCasinoApp(false);
+          return;
+        }
+        if (payload.type === "action" && isCoordinator()) {
+          if (payload.action === "reset" || payload.action?.startsWith("gold:")) return;
+          await setState(applyAction(state, payload.action, trustedActor(payload.actor)));
+        }
+        if (payload.type === "sync" && isCoordinator()) {
+          game.socket.emit(SOCKET, { type: "state", state });
+        }
+      });
+
+      if (!isCoordinator()) game.socket.emit(SOCKET, { type: "sync" });
+    } catch (err) {
+      console.warn(`${MODULE_ID} | Socket sync unavailable; casino will run locally.`, err);
+    }
   });
 })();
