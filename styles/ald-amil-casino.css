@@ -371,13 +371,7 @@
 
 .aac-seat.is-turn::before,
 .aac-seat.is-mine::before {
-  content: "";
-  position: absolute;
-  inset: 4px 16px 28px;
-  z-index: -1;
-  border-radius: 8px;
-  background: radial-gradient(ellipse at 50% 52%, rgba(255, 214, 93, .18), transparent 68%);
-  box-shadow: 0 0 18px rgba(255, 214, 93, .22);
+  content: none;
 }
 
 .aac-seat.is-win .aac-seat-status {
@@ -389,22 +383,23 @@
   background: linear-gradient(#fb5c68, #8b101b);
 }
 
-.aac-seat-0 { left: 50%; top: 69%; }
-.aac-seat-1 { left: 35%; top: 67%; }
-.aac-seat-2 { left: 65%; top: 67%; }
-.aac-seat-3 { left: 23%; top: 58%; }
-.aac-seat-4 { left: 77%; top: 58%; }
-.aac-seat-5 { left: 12%; top: 48%; }
-.aac-seat-6 { left: 88%; top: 48%; }
-.aac-seat-7 { left: 28%; top: 75%; }
-.aac-seat-8 { left: 72%; top: 75%; }
+.aac-seat-0 { left: 50%; top: 68.4%; }
+.aac-seat-1 { left: 35.1%; top: 66.3%; }
+.aac-seat-2 { left: 64.9%; top: 66.3%; }
+.aac-seat-3 { left: 23.4%; top: 56.9%; }
+.aac-seat-4 { left: 76.6%; top: 56.9%; }
+.aac-seat-5 { left: 12.1%; top: 47.2%; }
+.aac-seat-6 { left: 87.9%; top: 47.2%; }
+.aac-seat-7 { left: 28.1%; top: 74.2%; }
+.aac-seat-8 { left: 71.9%; top: 74.2%; }
 
 .aac-seat .aac-hand {
   width: 150px;
-  height: 78px;
+  height: 74px;
   justify-content: center;
   align-items: end;
   overflow: visible;
+  transform: translateY(-5px);
 }
 
 .aac-seat .aac-card {
@@ -443,19 +438,20 @@
 
 .aac-seat-status {
   position: absolute;
-  top: 59px;
-  right: 2px;
+  top: 55px;
+  right: 0;
   z-index: 6;
-  min-width: 34px;
-  max-width: 78px;
-  min-height: 28px;
-  padding: 3px 7px;
+  width: 76px;
+  min-height: 30px;
+  padding: 3px 8px;
   border: 2px solid rgba(255, 255, 255, .22);
   background: linear-gradient(#292f3c, #11151d);
-  font-size: 10px;
-  line-height: 1.05;
+  font-size: 8px;
+  line-height: 1;
   text-transform: uppercase;
-  overflow-wrap: anywhere;
+  white-space: normal;
+  word-break: normal;
+  overflow: hidden;
 }
 
 .aac-player-id {
@@ -673,6 +669,28 @@
   gap: 14px;
 }
 
+.aac-gm-tools {
+  grid-column: 3;
+  display: flex;
+  justify-content: flex-end;
+  align-items: end;
+  gap: 10px;
+}
+
+.aac-gm-tools .aac-round-control {
+  width: 58px;
+  height: 58px;
+}
+
+.aac-gm-tools .aac-round-control strong {
+  font-size: 13px;
+}
+
+.aac-gm-tools .aac-round-control span {
+  font-size: 8px;
+  margin-top: -7px;
+}
+
 .aac-action,
 .aac-chip-button {
   border: 0;
@@ -740,6 +758,12 @@
 
 .aac-round-control.primary {
   background: radial-gradient(circle at 40% 32%, #35e57d, #08a83d 68%, #055a20 100%);
+}
+
+.aac-round-control.utility {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, .28) 0 15%, transparent 16%),
+    radial-gradient(circle at 40% 32%, #8eb8ff, #315a9d 58%, #162948 100%);
 }
 
 .aac-round-control.double {

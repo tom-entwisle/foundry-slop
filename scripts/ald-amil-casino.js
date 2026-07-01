@@ -138,6 +138,18 @@
     };
   }
 
+  function makeTestActor(s) {
+    const existing = new Set((s.seats || []).map(p => p.name));
+    let n = 1;
+    while (existing.has(`Test Guest ${n}`)) n += 1;
+    return {
+      userId: `test-${foundry.utils?.randomID?.() || crypto.randomUUID?.() || Date.now()}`,
+      name: `Test Guest ${n}`,
+      image: "",
+      isGM: false
+    };
+  }
+
   function buildShoe() {
     const cards = [];
     for (let d = 0; d < DECKS; d++) {
@@ -372,6 +384,22 @@
       return freshTableState(s);
     }
 
+    if (action === "test-user") {
+      if (!who.isGM) {
+        ui.notifications?.warn("Only the DM can add casino test users.");
+        return s;
+      }
+      if (s.seats.length >= MAX_SEATS) {
+        ui.notifications?.warn("The casino table is already full.");
+        return s;
+      }
+      const testActor = makeTestActor(s);
+      ensureAccount(s, testActor);
+      s.seats.push(makeSeat(testActor));
+      addLog(s, `${testActor.name} is added to the table for layout testing.`);
+      return s;
+    }
+
     if (action.startsWith("gold:")) {
       adjustGold(s, action, who);
       return s;
@@ -495,7 +523,7 @@
 
   async function requestAction(action) {
     const who = trustedActor(actor());
-    const gmOnly = action === "reset" || action.startsWith("gold:");
+    const gmOnly = action === "reset" || action === "test-user" || action.startsWith("gold:");
     if (gmOnly && !who.isGM) {
       ui.notifications?.warn("Only the DM can use that casino control.");
       return;
@@ -672,6 +700,10 @@
               <span><small>Total Bet</small><strong>${mySeat?.bet || 0}g</strong></span>
             </div>
             <div class="aac-buttons">${this.renderControls(mySeat)}</div>
+            ${game.user.isGM ? `<div class="aac-gm-tools">
+              <button class="aac-action aac-round-control utility" data-aac-action="test-user"><strong>+</strong><span>User</span></button>
+              <button class="aac-action aac-round-control danger utility" data-aac-action="reset"><strong>Reset</strong><span>Table</span></button>
+            </div>` : ""}
           </div>
         </div>
       </section>`;
@@ -725,8 +757,7 @@
       if (["lobby", "settled"].includes(state.phase)) {
         return [
           `<button class="aac-action aac-round-control primary" data-aac-action="start" ${activeSeats(state).length <= 0 ? "disabled" : ""}><strong>Deal</strong><span>Start</span></button>`,
-          `<button class="aac-action aac-round-control" data-aac-action="leave"><strong>Exit</strong><span>Leave</span></button>`,
-          game.user.isGM ? `<button class="aac-action aac-round-control danger" data-aac-action="reset"><strong>Reset</strong><span>Table</span></button>` : ""
+          `<button class="aac-action aac-round-control" data-aac-action="leave"><strong>Exit</strong><span>Leave</span></button>`
         ].join("");
       }
       if (state.phase === "betting") {
@@ -1027,7 +1058,7 @@
           return;
         }
         if (payload.type === "action" && isCoordinator()) {
-          if (payload.action === "reset" || payload.action?.startsWith("gold:")) return;
+          if (payload.action === "reset" || payload.action === "test-user" || payload.action?.startsWith("gold:")) return;
           await setState(applyAction(state, payload.action, trustedActor(payload.actor)));
         }
         if (payload.type === "sync" && isCoordinator()) {
