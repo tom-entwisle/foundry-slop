@@ -248,21 +248,20 @@
 .aac-felt-table {
   position: relative;
   width: 760px;
-  height: 580px;
+  height: 626px;
   min-height: 0;
   display: grid;
-  grid-template-rows: 128px 46px 28px minmax(0, 1fr);
+  grid-template-rows: 96px 28px minmax(0, 1fr);
   gap: 10px;
   padding: 18px 20px 20px;
   overflow: hidden;
   border: 1px solid rgba(255, 215, 106, .38);
   border-radius: 8px;
   background:
-    linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(255,255,255,.035) 1px, transparent 1px),
-    radial-gradient(circle at 50% 42%, rgba(35, 224, 167, .18), transparent 34%),
-    linear-gradient(145deg, #05251f, #064f3a 52%, #031c18);
-  background-size: 38px 38px, 38px 38px, auto, auto;
+    radial-gradient(circle at 50% 48%, rgba(255, 215, 106, .12), transparent 20%),
+    radial-gradient(circle at 50% 52%, rgba(35, 224, 167, .26), transparent 38%),
+    linear-gradient(145deg, #031b19, #07553f 48%, #021513);
+  background-size: auto, auto, auto;
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, .08),
     inset 0 0 70px rgba(0, 0, 0, .44),
@@ -289,18 +288,15 @@
 }
 
 .aac-table-brand {
-  position: relative;
-  order: 2;
-  top: auto;
-  left: auto;
+  position: absolute;
+  top: 43%;
+  left: 50%;
   z-index: 1;
   display: grid;
-  gap: 3px;
-  width: 320px;
-  justify-self: center;
-  align-self: center;
-  transform: none;
-  color: rgba(255, 244, 207, .55);
+  gap: 5px;
+  width: 360px;
+  transform: translate(-50%, -50%);
+  color: rgba(255, 244, 207, .64);
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -309,13 +305,13 @@
 
 .aac-table-brand span,
 .aac-table-brand small {
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 950;
 }
 
 .aac-table-brand strong {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 42px;
+  font-size: 84px;
   line-height: .8;
   color: rgba(255, 232, 155, .18);
   text-shadow: 0 0 30px rgba(255, 215, 106, .2);
@@ -328,7 +324,7 @@
   left: auto;
   z-index: 3;
   width: 100%;
-  padding: 10px 12px;
+  padding: 8px 10px;
   justify-self: center;
   transform: none;
   background:
@@ -353,7 +349,7 @@
 }
 
 .aac-panel-title h2 {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .aac-badge {
@@ -373,35 +369,35 @@
 }
 
 .aac-dealer .aac-hand {
-  min-height: 56px;
-  max-height: 64px;
-  margin: 7px 0;
+  min-height: 46px;
+  max-height: 52px;
+  margin: 5px 0 0;
   overflow: visible;
 }
 
 .aac-dealer .aac-card {
-  width: 44px;
-  height: 62px;
+  width: 36px;
+  height: 50px;
   border-radius: 6px;
 }
 
 .aac-dealer .aac-card-corner {
   top: 4px;
-  left: 5px;
-  font-size: 12px;
-}
-
-.aac-dealer .aac-card-corner small {
+  left: 4px;
   font-size: 10px;
 }
 
+.aac-dealer .aac-card-corner small {
+  font-size: 9px;
+}
+
 .aac-dealer .aac-card-corner.is-bottom {
-  right: 5px;
+  right: 4px;
   bottom: 4px;
 }
 
 .aac-dealer .aac-card-face {
-  font-size: 23px;
+  font-size: 18px;
 }
 
 .aac-card {
@@ -478,16 +474,14 @@
   font-size: 13px;
 }
 
-.aac-machine,
 .aac-meters {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
 
-.aac-machine span,
 .aac-meters span {
-  padding: 4px 6px;
+  padding: 5px 8px;
   border: 1px solid rgba(255,255,255,.12);
   border-radius: 999px;
   background: rgba(0,0,0,.28);
@@ -495,20 +489,18 @@
   font-size: 11px;
 }
 
-.aac-dealer .aac-machine span {
-  padding: 3px 7px;
-  font-size: 9px;
-  border-color: rgba(255, 215, 106, .18);
+.aac-machine {
+  display: none;
 }
 
 .aac-seat-ring {
   position: relative;
-  order: 4;
+  order: 3;
   inset: auto;
   z-index: 4;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  grid-auto-rows: 188px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 138px;
   gap: 12px;
   min-height: 0;
 }
@@ -522,23 +514,18 @@
   align-content: start;
 }
 
-.aac-seat-ring:has(.aac-seat:nth-child(1):last-child),
-.aac-seat-ring:has(.aac-seat:nth-child(2):last-child) {
-  grid-template-columns: repeat(2, minmax(250px, 1fr));
-}
-
 .aac-seat {
   position: relative;
   z-index: 4;
   width: auto;
   min-width: 0;
-  height: 188px;
-  max-height: 188px;
-  padding: 12px;
+  height: 138px;
+  max-height: 138px;
+  padding: 10px;
   overflow: hidden;
   display: grid;
-  grid-template-rows: auto 72px auto;
-  gap: 9px;
+  grid-template-rows: auto 50px auto;
+  gap: 7px;
   transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease, opacity .2s ease;
 }
 
@@ -568,16 +555,16 @@
 
 .aac-player-id {
   display: grid;
-  grid-template-columns: 40px minmax(0, 1fr);
-  gap: 9px;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 8px;
   align-items: center;
   min-width: 0;
 }
 
 .aac-player-id img,
 .aac-token-fallback {
-  width: 40px;
-  height: 40px;
+  width: 34px;
+  height: 34px;
   border: 1px solid rgba(255, 215, 106, .5);
   border-radius: 50%;
   object-fit: cover;
@@ -593,8 +580,8 @@
 }
 
 .aac-seat h3 {
-  font-size: 14px;
-  max-width: 110px;
+  font-size: 13px;
+  max-width: 118px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -623,43 +610,45 @@
 }
 
 .aac-seat .aac-hand {
-  max-height: 72px;
-  min-height: 72px;
+  max-height: 50px;
+  min-height: 50px;
   overflow: hidden;
   align-content: flex-start;
 }
 
 .aac-seat .aac-card {
-  width: 42px;
-  height: 60px;
+  width: 32px;
+  height: 46px;
   border-radius: 6px;
   box-shadow: 0 5px 10px rgba(0,0,0,.32);
 }
 
 .aac-seat .aac-card-corner {
-  top: 4px;
-  left: 5px;
-  font-size: 12px;
-}
-
-.aac-seat .aac-card-corner small {
+  top: 3px;
+  left: 4px;
   font-size: 10px;
 }
 
+.aac-seat .aac-card-corner small {
+  font-size: 8px;
+}
+
 .aac-seat .aac-card-corner.is-bottom {
-  right: 5px;
-  bottom: 4px;
+  right: 4px;
+  bottom: 3px;
 }
 
 .aac-seat .aac-card-face {
-  font-size: 23px;
+  font-size: 17px;
 }
 
 .aac-meters span {
   display: grid;
   gap: 1px;
-  min-width: 42px;
+  min-width: 46px;
   border-color: rgba(255, 215, 106, .16);
+  justify-items: center;
+  text-align: center;
 }
 
 .aac-meters small {
@@ -714,7 +703,7 @@
 
 .aac-payout-ribbon {
   position: relative;
-  order: 3;
+  order: 2;
   left: auto;
   bottom: auto;
   z-index: 5;
@@ -771,6 +760,34 @@
   gap: 3px;
   margin-top: 10px;
   padding: 10px;
+}
+
+.aac-countdown {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 8px 10px;
+  border: 1px solid rgba(35, 224, 167, .38);
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(35, 224, 167, .16), rgba(255, 215, 106, .08));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 0 18px rgba(35, 224, 167, .08);
+}
+
+.aac-countdown span {
+  color: var(--aac-muted);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+}
+
+.aac-countdown strong {
+  color: var(--aac-green);
+  font-size: 20px;
+  line-height: 1;
+  text-shadow: 0 0 12px rgba(35, 224, 167, .42);
 }
 
 .aac-player-balance strong {
@@ -1006,21 +1023,21 @@
 
 @media (max-height: 740px) and (min-width: 1041px) {
   .aac-felt-table {
-    height: 560px;
-    grid-template-rows: 116px 42px 24px minmax(0, 1fr);
-  }
-
-  .aac-dealer {
-    width: min(520px, 100%);
+    height: 600px;
+    grid-template-rows: 88px 24px minmax(0, 1fr);
   }
 
   .aac-seat {
-    height: 174px;
-    max-height: 174px;
+    height: 132px;
+    max-height: 132px;
   }
 
   .aac-seat-ring {
-    grid-auto-rows: 174px;
+    grid-auto-rows: 132px;
+  }
+
+  .aac-table-brand strong {
+    font-size: 72px;
   }
 }
 

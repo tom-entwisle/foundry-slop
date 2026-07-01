@@ -8,7 +8,8 @@
   const SOCKET = `module.${MODULE_ID}`;
   const STARTING_GOLD = 100;
   const MIN_BET = 5;
-  const MAX_SEATS = 7;
+  const MAX_SEATS = 9;
+  const BETTING_SECONDS = 15;
   const DECKS = 4;
 
   const suits = ["S", "H", "D", "C"];
@@ -18,6 +19,7 @@
   let state = null;
   let casinoApp = null;
   let chatInterceptorInstalled = false;
+  let casinoClockInstalled = false;
 
   const clone = value => foundry.utils?.deepClone ? foundry.utils.deepClone(value) : structuredClone(value);
   const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -62,6 +64,7 @@
       seats: [],
       accounts: {},
       turn: 0,
+      bettingDeadline: 0,
       log: ["The Ald Amil Casino opens its brass doors. Join between rounds to buy into the next cycle."]
     };
   }
@@ -193,15 +196,17 @@
     s.phase = "betting";
     s.dealer = { hand: [], reveal: false };
     s.turn = 0;
+    s.bettingDeadline = Date.now() + BETTING_SECONDS * 1000;
     s.seats.forEach(p => resetHand(s, p));
-    addLog(s, `${who.name} starts the next probability cycle.`);
+    addLog(s, `${who.name} opens betting. The round starts in ${BETTING_SECONDS} seconds.`);
   }
 
-  function dealHand(s) {
-    const players = activeSeats(s).filter(p => p.ready && p.bet > 0 && goldOf(s, p) >= p.bet);
+  function dealHand(s, includeAllActive = false) {
+    const players = activeSeats(s).filter(p => (includeAllActive || p.ready) && p.bet > 0 && goldOf(s, p) >= p.bet);
     if (!players.length) return;
     s.handNo += 1;
     s.phase = "playing";
+    s.bettingDeadline = 0;
     s.dealer = { hand: [], reveal: false };
     players.forEach(p => {
       p.hand = [];
@@ -311,6 +316,18 @@
   function allReady(s) {
     const players = activeSeats(s).filter(p => p.bet > 0 && goldOf(s, p) >= p.bet);
     return players.length > 0 && players.every(p => p.ready);
+  }
+
+  function bettingSecondsLeft(s = state) {
+    if (s?.phase !== "betting" || !s.bettingDeadline) return 0;
+    return clamp(Math.ceil((s.bettingDeadline - Date.now()) / 1000), 0, BETTING_SECONDS);
+  }
+
+  function settleExpiredBetting() {
+    if (!state || state.phase !== "betting" || bettingSecondsLeft(state) > 0 || !isCoordinator()) return;
+    const next = normalizeState(clone(state));
+    dealHand(next, true);
+    if (next.phase === "playing" || next.phase === "settled") setState(next);
   }
 
   function adjustGold(s, action, who) {
@@ -603,7 +620,8 @@
       const hideHole = state.phase === "playing" && !state.dealer.reveal;
       const currentId = players[state.turn]?.userId;
       const myGold = goldOf(state, actor());
-      const currentName = currentId ? esc(seat(state, currentId)?.name || "Player") : "Open Table";
+      const countdown = bettingSecondsLeft(state);
+      const currentName = state.phase === "betting" ? `Betting ${countdown}s` : currentId ? esc(seat(state, currentId)?.name || "Player") : "Open Table";
       return `<section class="aac-shell">
         <header class="aac-hud">
           <div class="aac-brand">
@@ -633,6 +651,7 @@
             <section class="aac-controls">
               <div class="aac-panel-title"><h2>Player Console</h2><span class="aac-badge">${esc(state.phase)}</span></div>
               ${mySeat ? `<div class="aac-player-balance"><span>Current Bet</span><strong>${mySeat.bet || 0}g</strong><small>Balance ${myGold}g</small></div>` : ""}
+              ${state.phase === "betting" ? `<div class="aac-countdown"><span>Betting closes in</span><strong>${countdown}s</strong></div>` : ""}
               <div class="aac-buttons">${this.renderControls(mySeat)}</div>
             </section>
             ${this.renderTreasury()}
@@ -954,6 +973,16 @@
     document.getElementById("ald-amil-casino-launcher")?.remove();
   }
 
+  function installCasinoClock() {
+    if (casinoClockInstalled) return;
+    casinoClockInstalled = true;
+    setInterval(() => {
+      if (state?.phase !== "betting") return;
+      settleExpiredBetting();
+      renderCasinoApp(false);
+    }, 1000);
+  }
+
   Hooks.once("init", () => {
     game.settings.register(MODULE_ID, "state", {
       name: "Ald Amil Casino State",
@@ -979,6 +1008,7 @@
       get state() { return state; }
     };
     installChatCommandInterceptor();
+    installCasinoClock();
     removeLauncherButton();
 
     try {
