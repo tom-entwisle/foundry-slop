@@ -38,5 +38,5 @@
   "license": "UNLICENSED",
   "url": "https://github.com/tom-entwisle/foundry-slop",
   "manifest": "https://raw.githubusercontent.com/tom-entwisle/foundry-slop/main/module.json",
-  "download": "https://github.com/tom-entwisle/foundry-slop/releases/download/v1.0.4/ald-amil-casino.zip"
+  "download": "https://raw.githubusercontent.com/tom-entwisle/foundry-slop/main/ald-amil-casino.zip"
 }

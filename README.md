@@ -13,7 +13,7 @@ https://raw.githubusercontent.com/tom-entwisle/foundry-slop/main/module.json
 The module release package is expected at:
 
 ```text
-https://github.com/tom-entwisle/foundry-slop/releases/download/v1.0.4/ald-amil-casino.zip
+https://raw.githubusercontent.com/tom-entwisle/foundry-slop/main/ald-amil-casino.zip
 ```
 
 ## Usage
@@ -44,7 +44,6 @@ You can also type `/casino` or `!casino` in chat. The module intercepts those co
 
 ## Releasing
 
-1. Update `version` and `download` in `module.json`.
+1. Update `version` in `module.json` and `package.json`.
 2. Run `npm run package`.
-3. Create a GitHub release using the same tag as the manifest version, for example `v1.0.4`.
-4. Upload `dist/ald-amil-casino.zip` to the release.
+3. Commit and push `ald-amil-casino.zip` with the manifest changes.
