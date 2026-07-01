@@ -14,8 +14,8 @@
   --aac-border: rgba(255, 215, 106, .34);
   --aac-shadow: 0 20px 70px rgba(0, 0, 0, .68);
   --aac-radius: 8px;
-  --aac-card-w: 42px;
-  --aac-card-h: 60px;
+  --aac-card-w: 40px;
+  --aac-card-h: 58px;
 }
 
 .ald-amil-casino-window .window-content {
@@ -29,8 +29,8 @@
   top: 4vh;
   left: 50%;
   z-index: 100;
-  width: min(1180px, calc(100vw - 24px));
-  height: min(760px, calc(100vh - 24px));
+  width: min(1320px, calc(100vw - 24px));
+  height: min(780px, calc(100vh - 24px));
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -45,8 +45,8 @@
 .ald-amil-casino-window {
   min-width: 780px;
   min-height: 620px;
-  max-width: 1180px;
-  max-height: 760px;
+  max-width: 1320px;
+  max-height: 780px;
 }
 
 .aac-window-header {
@@ -238,10 +238,10 @@
 
 .aac-main {
   display: grid;
-  grid-template-columns: 760px 360px;
-  gap: 14px;
+  grid-template-columns: 780px 350px;
+  gap: 12px;
   min-height: 0;
-  padding: 12px 14px 14px;
+  padding: 12px;
   overflow: hidden;
 }
 
@@ -259,12 +259,16 @@
 
 .aac-felt-table {
   position: relative;
-  width: 760px;
-  height: 560px;
+  width: 780px;
+  height: 610px;
   min-height: 0;
+  display: grid;
+  grid-template-rows: 112px 64px 28px minmax(0, 1fr);
+  gap: 8px;
+  padding: 22px 28px 28px;
   overflow: hidden;
   border: 2px solid rgba(255, 215, 106, .48);
-  border-radius: 48% 48% 22px 22px / 32% 32% 18px 18px;
+  border-radius: 26px;
   background:
     linear-gradient(140deg, rgba(255, 255, 255, .1), transparent 24%, rgba(0, 0, 0, .16) 70%),
     radial-gradient(ellipse at 50% 54%, rgba(35, 224, 167, .18), transparent 31%),
@@ -297,14 +301,17 @@
 }
 
 .aac-table-brand {
-  position: absolute;
-  top: 238px;
-  left: 50%;
+  position: relative;
+  order: 2;
+  top: auto;
+  left: auto;
   z-index: 1;
   display: grid;
   gap: 3px;
   width: 320px;
-  transform: translateX(-50%);
+  justify-self: center;
+  align-self: center;
+  transform: none;
   color: rgba(255, 244, 207, .55);
   text-align: center;
   text-transform: uppercase;
@@ -320,20 +327,22 @@
 
 .aac-table-brand strong {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 70px;
+  font-size: 56px;
   line-height: .8;
   color: rgba(255, 232, 155, .18);
   text-shadow: 0 0 30px rgba(255, 215, 106, .2);
 }
 
 .aac-dealer {
-  position: absolute;
-  top: 18px;
-  left: 50%;
+  position: relative;
+  order: 1;
+  top: auto;
+  left: auto;
   z-index: 3;
-  width: 424px;
-  padding: 10px;
-  transform: translateX(-50%);
+  width: min(560px, 100%);
+  padding: 8px 10px;
+  justify-self: center;
+  transform: none;
   background:
     linear-gradient(150deg, rgba(16, 23, 33, .94), rgba(4, 50, 41, .9)),
     repeating-linear-gradient(135deg, rgba(255,255,255,.045), rgba(255,255,255,.045) 1px, transparent 1px, transparent 14px);
@@ -356,7 +365,7 @@
 }
 
 .aac-panel-title h2 {
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .aac-badge {
@@ -371,8 +380,40 @@
   display: flex;
   flex-wrap: wrap;
   gap: 7px;
-  min-height: 56px;
+  min-height: 52px;
   margin: 8px 0;
+}
+
+.aac-dealer .aac-hand {
+  min-height: 42px;
+  max-height: 48px;
+  margin: 6px 0;
+  overflow: hidden;
+}
+
+.aac-dealer .aac-card {
+  width: 36px;
+  height: 50px;
+  border-radius: 6px;
+}
+
+.aac-dealer .aac-card-corner {
+  top: 4px;
+  left: 4px;
+  font-size: 10px;
+}
+
+.aac-dealer .aac-card-corner small {
+  font-size: 9px;
+}
+
+.aac-dealer .aac-card-corner.is-bottom {
+  right: 4px;
+  bottom: 4px;
+}
+
+.aac-dealer .aac-card-face {
+  font-size: 18px;
 }
 
 .aac-card {
@@ -464,19 +505,35 @@
   font-size: 11px;
 }
 
+.aac-dealer .aac-machine span {
+  padding: 3px 6px;
+  font-size: 9px;
+}
+
 .aac-seat-ring {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  order: 4;
+  inset: auto;
   z-index: 4;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 142px;
+  gap: 10px;
+  min-height: 0;
 }
 
 .aac-seat {
-  position: absolute;
+  position: relative;
   z-index: 4;
-  width: 166px;
-  max-height: 178px;
+  width: auto;
+  min-width: 0;
+  height: 142px;
+  max-height: 142px;
   padding: 9px;
   overflow: hidden;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 6px;
   transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease, opacity .2s ease;
 }
 
@@ -549,34 +606,34 @@
 }
 
 .aac-seat .aac-hand {
-  max-height: 86px;
-  min-height: 46px;
+  max-height: 50px;
+  min-height: 40px;
   overflow: hidden auto;
 }
 
 .aac-seat .aac-card {
-  width: 34px;
-  height: 50px;
+  width: 30px;
+  height: 44px;
   border-radius: 6px;
 }
 
 .aac-seat .aac-card-corner {
-  top: 4px;
-  left: 4px;
-  font-size: 10px;
-}
-
-.aac-seat .aac-card-corner small {
+  top: 3px;
+  left: 3px;
   font-size: 9px;
 }
 
+.aac-seat .aac-card-corner small {
+  font-size: 8px;
+}
+
 .aac-seat .aac-card-corner.is-bottom {
-  right: 4px;
-  bottom: 4px;
+  right: 3px;
+  bottom: 3px;
 }
 
 .aac-seat .aac-card-face {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .aac-meters span {
@@ -627,14 +684,21 @@
   text-transform: uppercase;
 }
 
-.aac-seat-0 { left: 50%; bottom: 16px; transform: translateX(-50%); }
-.aac-seat-1 { left: 13%; bottom: 46px; }
-.aac-seat-2 { right: 13%; bottom: 46px; }
-.aac-seat-3 { left: 5%; bottom: 176px; }
-.aac-seat-4 { right: 5%; bottom: 176px; }
-.aac-seat-5 { left: 24%; top: 154px; }
-.aac-seat-6 { right: 24%; top: 154px; }
-.aac-seat-0.is-turn { transform: translateX(-50%) translateY(-4px); }
+.aac-seat-0,
+.aac-seat-1,
+.aac-seat-2,
+.aac-seat-3,
+.aac-seat-4,
+.aac-seat-5,
+.aac-seat-6 {
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  transform: none;
+}
+
+.aac-seat-0.is-turn,
 .aac-seat-1.is-turn,
 .aac-seat-2.is-turn,
 .aac-seat-3.is-turn,
@@ -643,16 +707,18 @@
 .aac-seat-6.is-turn { transform: translateY(-4px); }
 
 .aac-payout-ribbon {
-  position: absolute;
-  left: 50%;
-  bottom: 196px;
+  position: relative;
+  order: 3;
+  left: auto;
+  bottom: auto;
   z-index: 5;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
-  width: min(640px, calc(100% - 64px));
-  transform: translateX(-50%);
+  width: 100%;
+  min-height: 28px;
+  transform: none;
 }
 
 .aac-payout {
@@ -901,31 +967,21 @@
   }
 
   .aac-felt-table {
-    min-height: 980px;
-    border-radius: 28px;
-    padding: 22px;
-  }
-
-  .aac-dealer,
-  .aac-seat {
-    position: relative;
-    top: auto;
-    left: auto;
-    right: auto;
-    bottom: auto;
-    width: auto;
-    transform: none;
-  }
-
-  .aac-felt-table {
-    display: grid;
-    gap: 12px;
+    width: min(100%, 780px);
+    height: auto;
+    min-height: 0;
+    grid-template-rows: auto auto auto auto;
+    border-radius: 22px;
+    padding: 18px;
   }
 
   .aac-table-brand,
+  .aac-dealer,
+  .aac-seat,
   .aac-payout-ribbon {
     position: relative;
     top: auto;
+    right: auto;
     left: auto;
     bottom: auto;
     width: auto;
@@ -935,6 +991,8 @@
   .aac-seat-ring {
     position: relative;
     display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 142px;
     gap: 12px;
   }
 
@@ -945,23 +1003,22 @@
 
 @media (max-height: 740px) and (min-width: 1041px) {
   .aac-felt-table {
-    height: 540px;
+    height: 590px;
+    grid-template-rows: 106px 56px 24px minmax(0, 1fr);
   }
 
   .aac-dealer {
-    width: 404px;
+    width: min(520px, 100%);
   }
 
   .aac-seat {
-    width: 156px;
+    height: 132px;
+    max-height: 132px;
   }
 
-  .aac-seat-3 { bottom: 166px; }
-  .aac-seat-4 { bottom: 166px; }
-  .aac-seat-5 { top: 148px; }
-  .aac-seat-6 { top: 148px; }
-  .aac-table-brand { top: 222px; }
-  .aac-payout-ribbon { bottom: 184px; }
+  .aac-seat-ring {
+    grid-auto-rows: 132px;
+  }
 }
 
 @media (max-width: 640px) {
