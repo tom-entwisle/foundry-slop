@@ -18,9 +18,9 @@ https://raw.githubusercontent.com/tom-entwisle/foundry-slop/main/ald-amil-casino
 
 ## Usage
 
-Enable **Ald Amil Casino** in Foundry, then use the moveable **Ald Amil Casino** launcher button near the lower-left of the Foundry UI to open a resizable blackjack window. Drag the launcher to reposition it; its location is saved for your browser.
+Enable **Ald Amil Casino** in Foundry, then type `!casino` in chat to open the resizable blackjack window. The module intercepts the command locally and opens the casino without posting a chat message.
 
-You can also type `/casino` or `!casino` in chat. The module intercepts those commands locally and opens the casino window without posting a chat message.
+`/casino`, `/aldamil`, `!aldamil`, and `/ald-amil-casino` are also accepted as aliases.
 
 ## Multiplayer Flow
 

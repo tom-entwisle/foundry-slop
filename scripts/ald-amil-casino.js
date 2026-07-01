@@ -493,11 +493,15 @@
   }
 
   function renderCard(card, hidden = false) {
-    if (hidden) return `<span class="aac-card aac-card-back"><span>◆</span></span>`;
+    if (hidden) return `<span class="aac-card aac-card-back" aria-label="Hidden card"><span>21</span></span>`;
     const rank = card.slice(0, -1);
     const suit = card.slice(-1);
     const red = suit === "H" || suit === "D";
-    return `<span class="aac-card ${red ? "is-red" : ""}"><span>${esc(rank)}</span><span>${esc(suitGlyph[suit])}</span></span>`;
+    return `<span class="aac-card ${red ? "is-red" : ""}">
+      <span class="aac-card-corner">${esc(rank)}<small>${esc(suitGlyph[suit])}</small></span>
+      <span class="aac-card-face">${esc(suitGlyph[suit])}</span>
+      <span class="aac-card-corner is-bottom">${esc(rank)}<small>${esc(suitGlyph[suit])}</small></span>
+    </span>`;
   }
 
   function renderHand(hand, hideHole = false) {
@@ -586,7 +590,7 @@
       wrapper.id = "ald-amil-casino-app";
       wrapper.className = "ald-amil-casino-window aac-floating-window";
       wrapper.innerHTML = `<header class="aac-window-header">
-        <strong>Ald Amil Casino</strong>
+        <strong>Ald Amil Live Blackjack</strong>
         <button type="button" class="aac-window-close" aria-label="Close Ald Amil Casino">&times;</button>
       </header><div class="window-content aac-window-content"></div>`;
       wrapper.querySelector(".aac-window-close").addEventListener("click", () => this.close());
@@ -602,31 +606,41 @@
       const hideHole = state.phase === "playing" && !state.dealer.reveal;
       const currentId = players[state.turn]?.userId;
       const myGold = goldOf(state, actor());
+      const currentName = currentId ? esc(seat(state, currentId)?.name || "Player") : "Open Table";
       return `<section class="aac-shell">
-        <header class="aac-hero">
-          <div class="aac-hero-art" aria-hidden="true"><span></span></div>
-          <div class="aac-hero-copy">
-            <div class="aac-kicker">Ald Amil Casino</div>
-            <h1>Odds Engine Blackjack</h1>
-            <p>Cogwright chronometers, brass probability rails, and a dealer automaton that never blinks.</p>
+        <header class="aac-hud">
+          <div class="aac-brand">
+            <span class="aac-live-dot"></span>
+            <div>
+              <strong>Ald Amil Live Blackjack</strong>
+              <small>VIP Table · Blackjack pays 3:2 · Dealer hits soft 17</small>
+            </div>
           </div>
-          <div class="aac-status">
-            <span>${esc(state.phase.toUpperCase())}</span>
-            <strong>${myGold}g</strong>
-            <small>Your Gold</small>
+          <div class="aac-hud-stats">
+            <span><small>Phase</small><strong>${esc(state.phase)}</strong></span>
+            <span><small>Hand</small><strong>#${state.handNo}</strong></span>
+            <span><small>Turn</small><strong>${currentName}</strong></span>
+            <span><small>Balance</small><strong>${myGold}g</strong></span>
           </div>
         </header>
-        <main class="aac-main">
-          ${this.renderTable(hideHole, currentId)}
-          <aside class="aac-side">
+        <div class="aac-ticker">
+          <span>LIVE</span>
+          <p>${esc((state.log || [])[0] || "Table ready.")}</p>
+        </div>
+        <main class="aac-main aac-phase-${esc(state.phase)}">
+          <section class="aac-table-zone">
+            ${this.renderTable(hideHole, currentId)}
+          </section>
+          <aside class="aac-rail">
             <section class="aac-controls">
-              <div class="aac-panel-title"><h2>Your Console</h2><span class="aac-chip">${esc(state.phase)}</span></div>
+              <div class="aac-panel-title"><h2>Player Console</h2><span class="aac-badge">${esc(state.phase)}</span></div>
+              ${mySeat ? `<div class="aac-player-balance"><span>Current Bet</span><strong>${mySeat.bet || 0}g</strong><small>Balance ${myGold}g</small></div>` : ""}
               <div class="aac-buttons">${this.renderControls(mySeat)}</div>
             </section>
             ${this.renderTreasury()}
             <section class="aac-log">
-              <div class="aac-panel-title"><h2>Engine Log</h2><span class="aac-chip">Hand ${state.handNo}</span></div>
-              ${(state.log || []).map(l => `<div class="aac-log-line">${esc(l)}</div>`).join("")}
+              <div class="aac-panel-title"><h2>Live Feed</h2><span class="aac-badge">Hand ${state.handNo}</span></div>
+              <div class="aac-log-lines">${(state.log || []).map(l => `<div class="aac-log-line">${esc(l)}</div>`).join("")}</div>
             </section>
           </aside>
         </main>
@@ -634,16 +648,21 @@
     }
 
     renderTable(hideHole, currentId) {
+      const settled = state.phase === "settled";
       return `<section class="aac-table-stage">
         <div class="aac-felt-table">
           <div class="aac-table-brand">
-            <span>Ald Amil Casino</span>
+            <span>Ald Amil</span>
             <strong>21</strong>
-            <small>Blackjack pays 3:2 · Dealer hits soft 17</small>
+            <small>Live Blackjack</small>
           </div>
           ${this.renderDealer(hideHole)}
+          ${settled ? this.renderPayoutRibbon() : ""}
           <div class="aac-seat-ring">
-            ${state.seats.length ? state.seats.map((p, index) => this.renderSeat(p, currentId, index)).join("") : `<div class="aac-empty">No players seated. Join between rounds to enter the next cycle.</div>`}
+            ${Array.from({ length: MAX_SEATS }, (_unused, index) => {
+              const p = state.seats[index];
+              return p ? this.renderSeat(p, currentId, index) : this.renderEmptySeat(index);
+            }).join("")}
           </div>
         </div>
       </section>`;
@@ -653,82 +672,105 @@
       return `<section class="aac-dealer">
         <div class="aac-panel-title">
           <div>
-            <span class="aac-kicker">Autonomous House</span>
-            <h2>Dealer Automaton</h2>
+            <span class="aac-kicker">Live Dealer</span>
+            <h2>House Console</h2>
           </div>
-          <span class="aac-chip">Total ${esc(renderValue(state.dealer.hand, hideHole))}</span>
+          <span class="aac-badge">Total ${esc(renderValue(state.dealer.hand, hideHole))}</span>
         </div>
         <div class="aac-hand">${renderHand(state.dealer.hand, hideHole)}</div>
         <div class="aac-machine">
-          <span>Chronometric shuffler online</span>
+          <span>Auto-shuffle online</span>
           <span>Shoe ${state.shoe?.length || 0}</span>
-          <span>Blackjack pays 3:2</span>
+          <span>Soft 17 hit</span>
         </div>
       </section>`;
+    }
+
+    renderPayoutRibbon() {
+      const settled = playingSeats(state);
+      if (!settled.length) return "";
+      return `<section class="aac-payout-ribbon">
+        ${settled.map(p => {
+          const delta = Number(p.lastDelta || 0);
+          const tone = delta > 0 ? "win" : delta < 0 ? "loss" : "push";
+          return `<span class="aac-payout is-${tone}"><strong>${esc(p.name)}</strong> ${esc(p.result || "Push")} <b>${delta >= 0 ? "+" : ""}${delta}g</b></span>`;
+        }).join("")}
+      </section>`;
+    }
+
+    renderEmptySeat(index) {
+      return `<article class="aac-seat aac-empty-seat aac-seat-${index}">
+        <div class="aac-empty-ring"><span>Seat ${index + 1}</span></div>
+      </article>`;
     }
 
     renderSeat(p, currentId, index = 0) {
       const account = ensureAccount(state, p);
       const image = p.image || account.image || "";
       const status = p.out ? "Out" : p.result || (p.ready ? "Ready" : p.standing ? "Stand" : p.busted ? "Bust" : p.surrendered ? "Surrender" : p.blackjack ? "Blackjack" : currentId === p.userId ? "Action" : "Seated");
-      return `<article class="aac-seat aac-seat-${index} ${currentId === p.userId ? "is-turn" : ""} ${p.out || p.busted ? "is-busted" : ""}">
+      const delta = Number(p.lastDelta || 0);
+      const resultClass = delta > 0 ? "is-win" : delta < 0 ? "is-loss" : p.result ? "is-push" : "";
+      return `<article class="aac-seat aac-seat-${index} ${currentId === p.userId ? "is-turn" : ""} ${p.out || p.busted ? "is-busted" : ""} ${resultClass}">
         <div class="aac-seat-head">
           <div class="aac-player-id">
             ${image ? `<img src="${esc(image)}" alt="">` : `<span class="aac-token-fallback">${esc((p.name || "?").slice(0, 1))}</span>`}
             <h3>${esc(p.name)}</h3>
           </div>
-          <span>${esc(status)}</span>
+          <span class="aac-seat-status">${esc(status)}</span>
         </div>
         <div class="aac-hand">${renderHand(p.hand)}</div>
         <div class="aac-meters">
-          <span>Gold <strong>${account.gold}</strong></span>
-          <span>Bet <strong>${p.bet || 0}</strong></span>
-          <span>Total <strong>${esc(renderValue(p.hand))}</strong></span>
-          ${p.lastDelta ? `<span>${p.lastDelta > 0 ? "+" : ""}${p.lastDelta}g</span>` : ""}
+          <span><small>Gold</small><strong>${account.gold}</strong></span>
+          <span><small>Bet</small><strong>${p.bet || 0}</strong></span>
+          <span><small>Total</small><strong>${esc(renderValue(p.hand))}</strong></span>
+          ${p.result ? `<span class="aac-delta"><small>${esc(p.result)}</small><strong>${delta >= 0 ? "+" : ""}${delta}g</strong></span>` : ""}
         </div>
       </article>`;
     }
 
     renderControls(mySeat) {
       if (!mySeat) {
-        return `<button data-aac-action="join" ${!["lobby", "settled"].includes(state.phase) || state.seats.length >= MAX_SEATS ? "disabled" : ""}>Join Table</button>`;
+        return `<button class="aac-action primary" data-aac-action="join" ${!["lobby", "settled"].includes(state.phase) || state.seats.length >= MAX_SEATS ? "disabled" : ""}>Join Table</button>`;
       }
       if (["lobby", "settled"].includes(state.phase)) {
         return [
-          `<button data-aac-action="start" ${activeSeats(state).length <= 0 ? "disabled" : ""}>Start Round</button>`,
-          `<button data-aac-action="leave">Leave Table</button>`,
-          game.user.isGM ? `<button data-aac-action="reset" class="danger">Reset Table</button>` : ""
+          `<button class="aac-action primary" data-aac-action="start" ${activeSeats(state).length <= 0 ? "disabled" : ""}>Start Round</button>`,
+          `<button class="aac-action" data-aac-action="leave">Leave Table</button>`,
+          game.user.isGM ? `<button class="aac-action danger" data-aac-action="reset">Reset Table</button>` : ""
         ].join("");
       }
       if (state.phase === "betting") {
         const gold = goldOf(state, mySeat);
         const maxed = mySeat.bet >= gold;
         return [
-          `<button data-aac-action="bet:-5" ${mySeat.ready || mySeat.bet <= MIN_BET ? "disabled" : ""}>-5g</button>`,
-          `<button data-aac-action="bet:5" ${mySeat.ready || maxed ? "disabled" : ""}>+5g</button>`,
-          `<button data-aac-action="bet:25" ${mySeat.ready || maxed ? "disabled" : ""}>+25g</button>`,
-          `<button data-aac-action="bet:all" ${mySeat.ready || maxed ? "disabled" : ""}>All In</button>`,
-          `<button data-aac-action="ready" class="primary">${mySeat.ready ? "Unready" : "Ready"}</button>`
+          `<button class="aac-chip-button is-minus" data-aac-action="bet:-5" ${mySeat.ready || mySeat.bet <= MIN_BET ? "disabled" : ""}>-5</button>`,
+          `<button class="aac-chip-button chip-5" data-aac-action="bet:5" ${mySeat.ready || maxed ? "disabled" : ""}>5</button>`,
+          `<button class="aac-chip-button chip-10" data-aac-action="bet:10" ${mySeat.ready || maxed ? "disabled" : ""}>10</button>`,
+          `<button class="aac-chip-button chip-25" data-aac-action="bet:25" ${mySeat.ready || maxed ? "disabled" : ""}>25</button>`,
+          `<button class="aac-chip-button chip-50" data-aac-action="bet:50" ${mySeat.ready || maxed ? "disabled" : ""}>50</button>`,
+          `<button class="aac-chip-button chip-100" data-aac-action="bet:100" ${mySeat.ready || maxed ? "disabled" : ""}>100</button>`,
+          `<button class="aac-action all-in" data-aac-action="bet:all" ${mySeat.ready || maxed ? "disabled" : ""}>All In</button>`,
+          `<button class="aac-action primary" data-aac-action="ready">${mySeat.ready ? "Unready" : "Ready"}</button>`
         ].join("");
       }
       if (state.phase === "playing") {
         const players = playingSeats(state);
         const isTurn = players[state.turn]?.userId === game.user.id;
         return [
-          `<button data-aac-action="hit" ${!isTurn ? "disabled" : ""}>Hit</button>`,
-          `<button data-aac-action="stand" ${!isTurn ? "disabled" : ""}>Stand</button>`,
-          `<button data-aac-action="double" ${!isTurn || mySeat.hand.length !== 2 || goldOf(state, mySeat) < mySeat.bet * 2 ? "disabled" : ""}>Double</button>`,
-          `<button data-aac-action="surrender" ${!isTurn || mySeat.hand.length !== 2 ? "disabled" : ""} class="danger">Surrender</button>`
+          `<button class="aac-action primary" data-aac-action="hit" ${!isTurn ? "disabled" : ""}>Hit</button>`,
+          `<button class="aac-action" data-aac-action="stand" ${!isTurn ? "disabled" : ""}>Stand</button>`,
+          `<button class="aac-action double" data-aac-action="double" ${!isTurn || mySeat.hand.length !== 2 || goldOf(state, mySeat) < mySeat.bet * 2 ? "disabled" : ""}>Double</button>`,
+          `<button class="aac-action danger" data-aac-action="surrender" ${!isTurn || mySeat.hand.length !== 2 ? "disabled" : ""}>Surrender</button>`
         ].join("");
       }
-      return `<button data-aac-action="start">Start Next Round</button>`;
+      return `<button class="aac-action primary" data-aac-action="start">Start Next Round</button>`;
     }
 
     renderTreasury() {
       if (!game.user.isGM) return "";
       const accounts = Object.values(state.accounts || {}).sort((a, b) => a.name.localeCompare(b.name));
       return `<section class="aac-treasury">
-        <div class="aac-panel-title"><h2>DM Treasury</h2><span class="aac-chip">GM Only</span></div>
+        <div class="aac-panel-title"><h2>Vault</h2><span class="aac-badge">GM</span></div>
         ${accounts.length ? accounts.map(a => `<div class="aac-account">
           <div><strong>${esc(a.name)}</strong><span>${a.gold}g</span></div>
           <button data-aac-action="gold:${a.userId}:-10">-10</button>
@@ -920,6 +962,10 @@
     }, true);
   }
 
+  function removeLauncherButton() {
+    document.getElementById("ald-amil-casino-launcher")?.remove();
+  }
+
   Hooks.once("init", () => {
     game.settings.register(MODULE_ID, "state", {
       name: "Ald Amil Casino State",
@@ -945,7 +991,7 @@
       get state() { return state; }
     };
     installChatCommandInterceptor();
-    installLauncherButton();
+    removeLauncherButton();
 
     try {
       game.socket.on(SOCKET, async payload => {
