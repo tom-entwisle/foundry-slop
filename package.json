@@ -1,0 +1,9 @@
+{
+  "name": "foundry-slop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Foundry VTT v14 module scaffold.",
+  "scripts": {
+    "package": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package.ps1"
+  }
+}

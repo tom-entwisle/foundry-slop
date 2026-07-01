@@ -1,0 +1,32 @@
+{
+  "id": "foundry-slop",
+  "title": "Foundry Slop",
+  "description": "A Foundry Virtual Tabletop module scaffold for version 14.",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "Tom Entwisle"
+    }
+  ],
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14",
+    "maximum": "14"
+  },
+  "esmodules": [
+    "scripts/foundry-slop.js"
+  ],
+  "styles": [
+    "styles/foundry-slop.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "url": "https://github.com/tom-entwisle/foundry-slop",
+  "manifest": "https://raw.githubusercontent.com/tom-entwisle/foundry-slop/main/module.json",
+  "download": "https://github.com/tom-entwisle/foundry-slop/releases/download/v0.1.0/foundry-slop.zip"
+}
