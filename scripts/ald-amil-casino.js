@@ -665,7 +665,7 @@
           <div class="aac-seat-ring ${state.seats.length ? "" : "is-empty"}">
             ${state.seats.length ? state.seats.map((p, index) => this.renderSeat(p, currentId, index)).join("") : `<div class="aac-table-empty">Use <strong>!casino</strong> to open this table, then join a seat.</div>`}
           </div>
-          ${state.phase === "betting" ? `<div class="aac-countdown"><span>Betting closes in</span><strong>${countdown}</strong></div>` : ""}
+          ${state.phase === "betting" ? `<div class="aac-countdown" style="--aac-tick:${BETTING_SECONDS - countdown};"><div class="aac-countdown-face"><span>Betting closes in</span><strong>${countdown}</strong></div></div>` : ""}
           <div class="aac-bottom-rail">
             <div class="aac-balance-strip">
               <span><small>Balance</small><strong>${myGold}g</strong></span>
