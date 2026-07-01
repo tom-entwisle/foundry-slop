@@ -493,7 +493,7 @@
   }
 
   function renderCard(card, hidden = false) {
-    if (hidden) return `<span class="aac-card aac-card-back" aria-label="Hidden card"><span>21</span></span>`;
+    if (hidden) return `<span class="aac-card aac-card-back" aria-label="Hidden card"><span>◆</span></span>`;
     const rank = card.slice(0, -1);
     const suit = card.slice(-1);
     const red = suit === "H" || suit === "D";
@@ -574,6 +574,8 @@
       this.content.innerHTML = "";
       this.content.appendChild(htmlFromString(this.renderCasino()));
       activateCasinoListeners(this.content);
+      this.content.querySelector(".aac-window-close")?.addEventListener("click", () => this.close());
+      installWindowDrag(this.element, this.content.querySelector(".aac-hud"));
       this.element.hidden = false;
       this.element.style.display = "";
     }
@@ -589,15 +591,10 @@
       const wrapper = document.createElement("section");
       wrapper.id = "ald-amil-casino-app";
       wrapper.className = "ald-amil-casino-window aac-floating-window";
-      wrapper.innerHTML = `<header class="aac-window-header">
-        <strong>Ald Amil Live Blackjack</strong>
-        <button type="button" class="aac-window-close" aria-label="Close Ald Amil Casino">&times;</button>
-      </header><div class="window-content aac-window-content"></div>`;
-      wrapper.querySelector(".aac-window-close").addEventListener("click", () => this.close());
+      wrapper.innerHTML = `<div class="window-content aac-window-content"></div>`;
       document.body.appendChild(wrapper);
       this.element = wrapper;
       this.content = wrapper.querySelector(".aac-window-content");
-      installWindowDrag(wrapper, wrapper.querySelector(".aac-window-header"));
     }
 
     renderCasino() {
@@ -622,6 +619,7 @@
             <span><small>Turn</small><strong>${currentName}</strong></span>
             <span><small>Balance</small><strong>${myGold}g</strong></span>
           </div>
+          <button type="button" class="aac-window-close" aria-label="Close Ald Amil Casino">&times;</button>
         </header>
         <div class="aac-ticker">
           <span>LIVE</span>
@@ -679,9 +677,8 @@
         </div>
         <div class="aac-hand">${renderHand(state.dealer.hand, hideHole)}</div>
         <div class="aac-machine">
-          <span>Auto-shuffle online</span>
           <span>Shoe ${state.shoe?.length || 0}</span>
-          <span>Soft 17 hit</span>
+          <span>Dealer hits soft 17</span>
         </div>
       </section>`;
     }
